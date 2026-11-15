@@ -18,13 +18,13 @@ import "./Viewer.css";
 interface ViewerProps {
   config: AtlasConfig;
   data: AtlasData;
-  /** The region in focus; null shows the whole brain. */
-  selectedId: number | null;
+  /** The regions in focus; none shows the whole brain. */
+  selectedIds: readonly number[];
   onPick: (id: number) => void;
 }
 
 /** The 3D brain with its controls: views, opacity, the view's own Light/Dark switch and help. */
-export function Viewer({ config, data, selectedId, onPick }: ViewerProps) {
+export function Viewer({ config, data, selectedIds, onPick }: ViewerProps) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const scene = useRef<BrainScene | null>(null);
   const pick = useRef(onPick);
@@ -37,6 +37,7 @@ export function Viewer({ config, data, selectedId, onPick }: ViewerProps) {
     loaded: number;
     total: number;
   }>();
+  const selection = selectedIds.join(",");
   const [hover, setHover] = useState<SceneHover | null>(null);
   const [regionOpacity, setRegionOpacity] = useState(100);
   const colors = usePlotColors();
@@ -77,9 +78,11 @@ export function Viewer({ config, data, selectedId, onPick }: ViewerProps) {
 
   useEffect(() => {
     const brain = scene.current;
-    if (selectedId === null) brain?.showWholeBrain();
-    else void brain?.spotlight(selectedId);
-  }, [selectedId]);
+    // Keyed by value, so a new array with the same regions doesn't re-run it.
+    const ids = selection ? selection.split(",").map(Number) : [];
+    if (ids.length === 0) brain?.showWholeBrain();
+    else void brain?.spotlight(ids);
+  }, [selection]);
 
   useEffect(
     () => scene.current?.setRegionOpacity(regionOpacity / 100),

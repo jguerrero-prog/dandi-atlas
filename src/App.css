@@ -10,6 +10,10 @@
   block-size: 2rem;
 }
 
+.atlas-page {
+  min-block-size: 0;
+}
+
 .atlas-main {
   display: grid;
   grid-template-columns: var(--layout-panel-default) minmax(0, 1fr) var(
@@ -47,24 +51,6 @@
 .atlas-viewer-error {
   max-inline-size: var(--layout-text-max);
   padding: var(--space-6);
-}
-
-.atlas-summary {
-  display: grid;
-  gap: var(--space-3);
-  justify-items: start;
-  padding: var(--space-4);
-}
-
-.atlas-summary-title {
-  margin: 0;
-  font: var(--type-h4);
-}
-
-.atlas-summary-acronym {
-  margin: 0;
-  font: var(--type-code-sm);
-  color: var(--text-secondary);
 }
 
 .atlas-credits {
