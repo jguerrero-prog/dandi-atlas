@@ -159,3 +159,7 @@
   gap: var(--space-3);
   justify-items: start;
 }
+
+.atlas-session-more {
+  padding-inline-start: var(--space-4);
+}
