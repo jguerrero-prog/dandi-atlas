@@ -5,7 +5,7 @@ set -euo pipefail
 
 # tree-region-options on jguerrero-prog/neurosift (flatironinstitute main-v3 a48a41d0 plus the Tree's choosing mode and a Toggletip height fix).
 # Re-pin to flatironinstitute once that change is merged there.
-NEUROSIFT_SHA=a692d511720d764def2912e5767c7d265d1a9eba
+NEUROSIFT_SHA=1b01e6a542d1030aa8bbc5afb0e3f1e4fd7265d4
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 NEUROSIFT_DIR="${1:-$ROOT/../neurosift}"
 FILES=(src/ui src/css/tokens.css src/css/fonts.css src/theme.ts src/shared/plotTheme.ts src/shared/plotColors.ts public/neurosift-logo.png)
