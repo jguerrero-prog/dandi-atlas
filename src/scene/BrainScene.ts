@@ -115,6 +115,8 @@ export class BrainScene {
   private activeIds: ReadonlySet<number> = new Set();
   /** The opening view: Allen shows every region at its own opacity; the others show the solid brain. */
   private overview = true;
+  /** The latest spotlight call, so a slow mesh from an earlier one can't undo a newer selection. */
+  private spotlightRequest: symbol | null = null;
   private roiIds: ReadonlySet<number> = new Set();
   private regionOpacity = 1;
   private electrodeOpacity = 1;
@@ -207,6 +209,7 @@ export class BrainScene {
 
   /** The whole brain, as the atlas opens. */
   showWholeBrain() {
+    this.spotlightRequest = null;
     this.overview = true;
     this.activeIds = new Set(this.data ? [this.data.manifest.root_id] : []);
     this.roiIds = new Set();
@@ -229,29 +232,32 @@ export class BrainScene {
       this.applyMode(entry, this.modeFor(id));
   }
 
-  /** Spotlights one region: its own mesh, fetched if needed, else its nearest ancestor that has one. */
-  async spotlight(id: number) {
+  /**
+   * Spotlights regions: each one's own mesh, fetched if needed, else its nearest ancestor that has one.
+   * Shows what is loaded at once, then again when missing meshes arrive, unless the selection moved on.
+   */
+  async spotlight(ids: readonly number[]) {
     const generation = this.generation;
+    const request = (this.spotlightRequest = Symbol("spotlight"));
     const show = () => {
-      const target = this.meshes.has(id)
-        ? id
-        : this.nearestAncestorWithMesh(id);
-      this.setSelection(new Set(target === null ? [] : [target]));
+      const targets = ids
+        .map((id) =>
+          this.meshes.has(id) ? id : this.nearestAncestorWithMesh(id),
+        )
+        .filter((id): id is number => id !== null);
+      this.setSelection(new Set(targets));
     };
     show();
-    if (
-      !this.meshes.has(id) &&
-      !this.failed.has(id) &&
-      !this.data?.manifest.no_mesh?.includes(id)
-    ) {
-      await this.loadMesh(id);
-      if (
-        generation === this.generation &&
-        !this.overview &&
-        this.activeIds.size <= 1
-      )
-        show();
-    }
+    const missing = ids.filter(
+      (id) =>
+        !this.meshes.has(id) &&
+        !this.failed.has(id) &&
+        !this.data?.manifest.no_mesh?.includes(id),
+    );
+    if (missing.length === 0) return;
+    await Promise.all(missing.map((id) => this.loadMesh(id)));
+    if (generation === this.generation && request === this.spotlightRequest)
+      show();
   }
 
   setRegionOpacity(opacity: number) {

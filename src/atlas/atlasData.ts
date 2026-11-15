@@ -39,6 +39,10 @@ export interface AtlasData {
   structures: Map<number, Structure>;
   regions: Map<number, DandiRegion>;
   manifest: MeshManifest;
+  /** The regions each dandiset covers directly. */
+  dandisetRegions: Map<string, number[]>;
+  /** Dandisets with electrode positions in this atlas's space. */
+  electrodeDandisets: Set<string>;
   /** Keys the data and mesh requests to the pipeline run, so a new run is never served from cache. */
   version: string;
 }
@@ -72,6 +76,28 @@ const isManifest = (data: unknown): data is MeshManifest =>
   typeof data.root_id === "number" &&
   isNumberArray(data.data_structures);
 
+const isStringArray = (data: unknown): data is string[] =>
+  Array.isArray(data) && data.every((item) => typeof item === "string");
+
+const isTitleMap = (data: unknown): data is Record<string, string> =>
+  isRecord(data) &&
+  Object.values(data).every((title) => typeof title === "string");
+
+/** Every dandiset's title, for all atlases at once; an empty map if the file can't be read. */
+export async function fetchDandisetTitles(
+  version: string,
+): Promise<Map<string, string>> {
+  try {
+    const titles = await fetchData(
+      `dandiset_titles.json?v=${version}`,
+      isTitleMap,
+    );
+    return new Map(Object.entries(titles));
+  } catch {
+    return new Map();
+  }
+}
+
 /** The pipeline's last run as digits (YYYYMMDDhhmmss); falls back to the mesh version if it can't be read. */
 export async function dataVersion(): Promise<string> {
   try {
@@ -96,10 +122,14 @@ export async function loadAtlasData(
   version: string,
 ): Promise<AtlasData> {
   const file = (name: string) => `atlases/${key}/${name}?v=${version}`;
-  const [roots, regionMap, manifest] = await Promise.all([
+  const [roots, regionMap, manifest, electrodes] = await Promise.all([
     fetchData(file("structure_graph.json"), isStructureList),
     fetchData(file("dandi_regions.json"), isRegionMap),
     fetchData(file("mesh_manifest.json"), isManifest),
+    // Only atlases with electrode data have this file.
+    fetchData(file("dandisets_with_electrodes.json"), isStringArray).catch(
+      (): string[] => [],
+    ),
   ]);
   const structures = flatten(roots, new Map());
   const regions = new Map(
@@ -113,7 +143,37 @@ export async function loadAtlasData(
     const rootRegion = regions.get(manifest.root_id);
     if (rootRegion) rootRegion.name = "Whole brain";
   }
-  return { key, roots, structures, regions, manifest, version };
+  const dandisetRegions = new Map<string, number[]>();
+  for (const [id, region] of regions) {
+    for (const dandiset of region.dandisets) {
+      dandisetRegions.set(dandiset, [
+        ...(dandisetRegions.get(dandiset) ?? []),
+        id,
+      ]);
+    }
+  }
+  return {
+    key,
+    roots,
+    structures,
+    regions,
+    manifest,
+    dandisetRegions,
+    electrodeDandisets: new Set(electrodes),
+    version,
+  };
+}
+
+/** A region's dandisets: those covering it directly first, then those covering only its subregions. */
+export function regionDandisets(
+  region: DandiRegion,
+): { id: string; direct: boolean }[] {
+  const direct = new Set(region.dandisets);
+  const rest = (region.total_dandisets ?? []).filter((id) => !direct.has(id));
+  return [
+    ...region.dandisets.map((id) => ({ id, direct: true })),
+    ...rest.map((id) => ({ id, direct: false })),
+  ];
 }
 
 /** The region's totals including descendants, so parents like "Motor cortex" don't read as empty. */

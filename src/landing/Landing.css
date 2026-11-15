@@ -1,0 +1,80 @@
+.atlas-landing-lead {
+  margin: 0;
+  font: var(--type-lead);
+  color: var(--text-secondary);
+}
+
+.atlas-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: var(--space-4);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.atlas-card {
+  display: grid;
+  gap: var(--space-2);
+  block-size: 100%;
+  box-sizing: border-box;
+  padding: var(--space-3);
+  color: var(--text-default);
+  text-decoration: none;
+  border: var(--border-width-1) solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.atlas-card:hover {
+  color: var(--text-default);
+  background: var(--surface-row-hover);
+  border-color: var(--border-strong);
+}
+
+.atlas-card:focus-visible {
+  outline: var(--border-width-2) solid var(--border-focus);
+  outline-offset: var(--border-width-2);
+}
+
+/* The renders are pale brains on dark, drawn by the pipeline, so they keep a dark frame in every theme. */
+.atlas-card-image {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  background: var(--color-navy-900);
+  border-radius: var(--radius-sm);
+}
+
+.atlas-card-name {
+  font: var(--type-label);
+  color: var(--text-link);
+}
+
+.atlas-card:hover .atlas-card-name {
+  color: var(--text-link-hover);
+  text-decoration: underline;
+}
+
+/* One row per figure: label left, number right, so long labels never wrap the numbers. */
+.atlas-card-stats {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+}
+
+.atlas-card-stats div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.atlas-card-stats dt {
+  font: var(--type-caption);
+  color: var(--text-secondary);
+}
+
+.atlas-card-stats dd {
+  margin: 0;
+  font: var(--type-code-sm);
+}

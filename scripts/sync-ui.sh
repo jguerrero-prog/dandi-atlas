@@ -3,7 +3,9 @@
 # Usage: scripts/sync-ui.sh [path to a neurosift clone with flatironinstitute as a remote, default ../neurosift]
 set -euo pipefail
 
-NEUROSIFT_SHA=a48a41d0b6707108b9422db547cfffdf2b634ec2
+# tree-region-options on jguerrero-prog/neurosift (flatironinstitute main-v3 a48a41d0 plus the Tree's choosing mode).
+# Re-pin to flatironinstitute once that change is merged there.
+NEUROSIFT_SHA=6db0a58da6ec3ea3c1089fd4899710a34efc6bb7
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 NEUROSIFT_DIR="${1:-$ROOT/../neurosift}"
 FILES=(src/ui src/css/tokens.css src/css/fonts.css src/theme.ts src/shared/plotTheme.ts src/shared/plotColors.ts public/neurosift-logo.png)
@@ -22,7 +24,7 @@ cp "$STAGE/public/neurosift-logo.png" "$ROOT/public/"
 cat >"$ROOT/src/ui/SOURCE.md" <<MD
 # Source
 
-Copied by \`scripts/sync-ui.sh\` from [flatironinstitute/neurosift](https://github.com/flatironinstitute/neurosift/tree/$NEUROSIFT_SHA/src/ui)
+Copied by \`scripts/sync-ui.sh\` from [jguerrero-prog/neurosift](https://github.com/jguerrero-prog/neurosift/tree/$NEUROSIFT_SHA/src/ui)
 at commit \`$NEUROSIFT_SHA\`, together with \`src/css/tokens.css\`, \`src/css/fonts.css\`, \`src/theme.ts\`,
 \`src/shared/plotTheme.ts\`, \`src/shared/plotColors.ts\` and \`public/neurosift-logo.png\`.
 

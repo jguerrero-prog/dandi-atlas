@@ -11,6 +11,8 @@ const data: AtlasData = {
   key: "allen_ccf",
   roots: [],
   version: "1",
+  dandisetRegions: new Map(),
+  electrodeDandisets: new Set(),
   manifest: { root_id: 997, data_structures: [672] },
   structures: new Map([
     [

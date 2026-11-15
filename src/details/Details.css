@@ -1,0 +1,58 @@
+.atlas-details {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+  padding: var(--space-4);
+}
+
+.atlas-details-head {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.atlas-details-title {
+  margin: 0;
+  font: var(--type-h4);
+  letter-spacing: var(--type-h4-letter-spacing);
+}
+
+.atlas-details-acronym {
+  margin: 0;
+  font: var(--type-code-sm);
+  color: var(--text-secondary);
+}
+
+.atlas-details-link {
+  justify-self: start;
+  font: var(--type-body-sm);
+}
+
+.atlas-details-help,
+.atlas-details-empty {
+  margin: 0;
+  font: var(--type-body-sm);
+  color: var(--text-secondary);
+}
+
+.atlas-details-actions,
+.atlas-details-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.atlas-details-subtitle {
+  margin: 0;
+  font: var(--type-label);
+  border-block-end: var(--border-width-2) solid var(--border-strong);
+  padding-block-end: var(--space-2);
+}
+
+.atlas-dandisets {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
