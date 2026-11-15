@@ -65,6 +65,8 @@ npm run dev
 
 Vite serves the `data/` folder at `/data` while it runs. `npm run check`, `npm run lint` and `npm test` run the same checks as CI. A production build copies the data in when `COPY_DATA=1` is set.
 
+Dandisets and NWB files open in Neurosift. `VITE_NEUROSIFT_URL` sets which Neurosift; it defaults to https://v3.neurosift.app/. The app opens in the dark theme until someone picks another in the Display menu.
+
 The original viewer is kept in `public/legacy/` while the rebuild is under way, and is served at `/legacy/index.html`.
 
 ## Updating the Data

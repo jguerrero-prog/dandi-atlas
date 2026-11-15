@@ -15,10 +15,6 @@
   inline-size: auto;
 }
 
-.atlas-page {
-  min-block-size: 0;
-}
-
 .atlas-main {
   display: grid;
   grid-template-columns: var(--layout-panel-default) minmax(0, 1fr) var(

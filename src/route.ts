@@ -6,27 +6,24 @@ import { isAtlasKey, type AtlasKey } from "./atlas/configs";
  * The query names the atlas; the hash holds the view, in the original viewer's format:
  * #region=672, #region=672,385 to compare, #dandiset=000017&subject=sub-M1&session=<asset id>.
  */
-export type Route =
-  | { page: "landing" }
-  | {
-      page: "atlas";
-      atlas: AtlasKey;
-      regions: number[];
-      /** Compare mode: tree and brain clicks add regions instead of replacing the selection. */
-      comparing: boolean;
-      dandiset?: string;
-      subject?: string;
-      session?: string;
-    };
+export interface Route {
+  page: "atlas";
+  atlas: AtlasKey;
+  regions: number[];
+  /** Compare mode: tree and brain clicks add regions instead of replacing the selection. */
+  comparing: boolean;
+  dandiset?: string;
+  subject?: string;
+  session?: string;
+}
 
 const DEFAULT_ATLAS: AtlasKey = "allen_ccf";
 
 export function parseRoute(search: string, hash: string): Route {
   const query = new URLSearchParams(search);
   const view = new URLSearchParams(hash.replace(/^#/, ""));
+  // A bare address opens the viewer on the Allen CCF; there is no separate landing page.
   const atlas = query.get("atlas");
-  if (!isAtlasKey(atlas) && [...view.keys()].length === 0)
-    return { page: "landing" };
   const regions = (view.get("region") ?? "")
     .split(",")
     .map((part) => Number(part))
@@ -47,7 +44,6 @@ export function routeHref(
   route: Route,
   base = import.meta.env.BASE_URL,
 ): string {
-  if (route.page === "landing") return base;
   const view = new URLSearchParams();
   if (route.dandiset) view.set("dandiset", route.dandiset);
   if (route.regions.length > 0) view.set("region", route.regions.join(","));

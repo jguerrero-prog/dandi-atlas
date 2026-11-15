@@ -146,3 +146,9 @@
   gap: var(--space-2);
   padding-block: var(--space-2);
 }
+
+.atlas-session-detail {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+}
