@@ -3,9 +3,9 @@
 # Usage: scripts/sync-ui.sh [path to a neurosift clone with flatironinstitute as a remote, default ../neurosift]
 set -euo pipefail
 
-# tree-region-options on jguerrero-prog/neurosift (flatironinstitute main-v3 a48a41d0 plus the Tree's choosing mode and a Toggletip height fix).
+# tree-region-options on jguerrero-prog/neurosift (flatironinstitute main-v3 a48a41d0 plus the Tree's choosing mode, a Toggletip fix and the Select listbox).
 # Re-pin to flatironinstitute once that change is merged there.
-NEUROSIFT_SHA=1b01e6a542d1030aa8bbc5afb0e3f1e4fd7265d4
+NEUROSIFT_SHA=cdf9651d8399e7b1453f0c0fe0aa36f994146a16
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 NEUROSIFT_DIR="${1:-$ROOT/../neurosift}"
 FILES=(src/ui src/css/tokens.css src/css/fonts.css src/theme.ts src/shared/plotTheme.ts src/shared/plotColors.ts public/neurosift-logo.png)
