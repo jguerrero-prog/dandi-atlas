@@ -54,7 +54,7 @@ export function App() {
         byline={
           <>
             {/* Spaces kept for the link's name; the byline's gap spaces them on screen. */}
-            {"by "}
+            {"on "}
             <img
               src={`${BASE}dandi-atlas-mark.png`}
               alt=""
