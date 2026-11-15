@@ -46,6 +46,8 @@ export interface SceneColors {
 export interface ElectrodePoint {
   coord: [number, number, number];
   label: string;
+  /** A token color for its session, when sessions are told apart; the electrode color otherwise. */
+  color?: string;
 }
 
 export type SceneHover =
@@ -281,7 +283,7 @@ export class BrainScene {
       entry.material.color = toColor(colors.outline);
       entry.outline?.uniforms.uColor.value.copy(toColor(colors.outline));
     }
-    if (this.electrodes)
+    if (this.electrodes && !this.electrodes.material.vertexColors)
       this.electrodes.material.color = toColor(colors.electrode);
   }
 
@@ -309,14 +311,25 @@ export class BrainScene {
     const positions = new Float32Array(points.flatMap((point) => point.coord));
     const geometry = new BufferGeometry();
     geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
+    const colored = points.some((point) => point.color);
+    if (colored) {
+      const colors = points.flatMap((point) =>
+        toColor(point.color ?? this.colors.electrode).toArray(),
+      );
+      geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
+    }
     const material = new PointsMaterial({
-      color: toColor(this.colors.electrode),
+      color: colored ? 0xffffff : toColor(this.colors.electrode),
+      vertexColors: colored,
       size: this.config.electrodeSize,
       sizeAttenuation: true,
       transparent: true,
       opacity: this.electrodeOpacity,
     });
     this.electrodes = new Points(geometry, material);
+    // Drawn after the meshes, so they show through translucent regions; opaque ones still hide them.
+    this.electrodes.renderOrder = 1;
+    material.depthWrite = false;
     this.electrodeInfo = points;
     this.world.add(this.electrodes);
   }

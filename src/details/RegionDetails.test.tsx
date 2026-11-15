@@ -82,6 +82,7 @@ const renderDetails = (selectedIds: number[], comparing: boolean) => {
       comparing={comparing}
       onSelect={onSelect}
       onCompare={onCompare}
+      dandisetHref={(id) => `#dandiset=${id}`}
     />,
   );
   return { onSelect, onCompare };
@@ -106,6 +107,11 @@ describe("RegionDetails", () => {
     expect(screen.getByText("Distributed coding of choice")).toBeTruthy();
     expect(screen.getByText("Dandiset 000022")).toBeTruthy();
     expect(screen.getByText("Electrode positions")).toBeTruthy();
+    expect(
+      screen
+        .getByRole("link", { name: "Distributed coding of choice" })
+        .getAttribute("href"),
+    ).toBe("#dandiset=000017");
   });
 
   it("offers the whole brain and compare mode", () => {

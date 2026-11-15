@@ -41,3 +41,6 @@ debug_output/
 /.python-version
 node_modules/
 dist/
+
+# Screenshots from local checks; images the app serves live in public/.
+/*.png

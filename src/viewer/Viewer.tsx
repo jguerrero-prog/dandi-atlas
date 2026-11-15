@@ -9,7 +9,11 @@ import {
 } from "@ui";
 import type { AtlasData } from "../atlas/atlasData";
 import type { AtlasConfig } from "../atlas/configs";
-import { BrainScene, type SceneHover } from "../scene/BrainScene";
+import {
+  BrainScene,
+  type ElectrodePoint,
+  type SceneHover,
+} from "../scene/BrainScene";
 import { VIEWS } from "../scene/views";
 import { plotColors } from "../shared/plotColors";
 import { HoverReadout } from "./HoverReadout";
@@ -21,10 +25,22 @@ interface ViewerProps {
   /** The regions in focus; none shows the whole brain. */
   selectedIds: readonly number[];
   onPick: (id: number) => void;
+  /** Electrode positions to draw, for a subject or a session. */
+  electrodes?: readonly ElectrodePoint[];
 }
 
+const NO_ELECTRODES: readonly ElectrodePoint[] = [];
+/** Regions drop to this opacity when electrodes appear, so the meshes don't hide them. */
+const ELECTRODE_VIEW_OPACITY = 50;
+
 /** The 3D brain with its controls: views, opacity, the view's own Light/Dark switch and help. */
-export function Viewer({ config, data, selectedIds, onPick }: ViewerProps) {
+export function Viewer({
+  config,
+  data,
+  selectedIds,
+  onPick,
+  electrodes = NO_ELECTRODES,
+}: ViewerProps) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const scene = useRef<BrainScene | null>(null);
   const pick = useRef(onPick);
@@ -40,6 +56,28 @@ export function Viewer({ config, data, selectedIds, onPick }: ViewerProps) {
   const selection = selectedIds.join(",");
   const [hover, setHover] = useState<SceneHover | null>(null);
   const [regionOpacity, setRegionOpacity] = useState(100);
+  const [electrodeOpacity, setElectrodeOpacity] = useState(100);
+
+  // When electrodes appear, regions drop to half so the dots show; when they go, the old opacity comes back,
+  // unless people moved the slider meanwhile. Adjusted while rendering, so the scene never draws the gap.
+  const hasElectrodes = electrodes.length > 0;
+  const [drop, setDrop] = useState<{ on: boolean; before: number | null }>({
+    on: false,
+    before: null,
+  });
+  if (drop.on !== hasElectrodes) {
+    if (hasElectrodes && regionOpacity > ELECTRODE_VIEW_OPACITY) {
+      setDrop({ on: true, before: regionOpacity });
+      setRegionOpacity(ELECTRODE_VIEW_OPACITY);
+    } else if (
+      !hasElectrodes &&
+      drop.before !== null &&
+      regionOpacity === ELECTRODE_VIEW_OPACITY
+    ) {
+      setRegionOpacity(drop.before);
+      setDrop({ on: false, before: null });
+    } else setDrop({ on: hasElectrodes, before: null });
+  }
 
   useEffect(() => {
     const element = canvas.current;
@@ -84,6 +122,13 @@ export function Viewer({ config, data, selectedIds, onPick }: ViewerProps) {
   useEffect(
     () => scene.current?.setRegionOpacity(regionOpacity / 100),
     [regionOpacity],
+  );
+
+  useEffect(() => scene.current?.showElectrodes([...electrodes]), [electrodes]);
+
+  useEffect(
+    () => scene.current?.setElectrodeOpacity(electrodeOpacity / 100),
+    [electrodeOpacity],
   );
 
   const loading =
@@ -133,6 +178,21 @@ export function Viewer({ config, data, selectedIds, onPick }: ViewerProps) {
               showField={false}
             />
           </div>
+          {hasElectrodes && (
+            <div className="atlas-viewer-opacity">
+              <Slider
+                label="Electrodes"
+                min={0}
+                max={100}
+                step={5}
+                unit="%"
+                unitName="percent opacity"
+                value={electrodeOpacity}
+                onChange={setElectrodeOpacity}
+                showField={false}
+              />
+            </div>
+          )}
           <Toggletip title="How to move the brain">
             Drag to rotate, scroll to zoom and right-drag to pan. Click a region
             to select it.

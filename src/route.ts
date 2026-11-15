@@ -97,3 +97,9 @@ export function navigate(route: Route, { replace = false } = {}) {
   window.history[replace ? "replaceState" : "pushState"](null, "", href);
   notify();
 }
+
+/** Follows an in-app link, such as a breadcrumb, as a new history entry. */
+export function navigateHref(href: string) {
+  window.history.pushState(null, "", href);
+  notify();
+}
