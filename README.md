@@ -57,8 +57,8 @@ The current view lives in the URL hash, so any state can be linked or bookmarked
 The viewer is a React app built with Vite, and its components, tokens and themes come from [Neurosift](https://github.com/flatironinstitute/neurosift)'s design system (see `scripts/sync-ui.sh`). The data files are already committed, including the meshes, so a clone and an npm install are all you need. Note that the clone is large, on the order of 400 MB.
 
 ```bash
-git clone https://github.com/jguerrero-prog/dandi-atlas.git
-cd dandi-atlas
+git clone https://github.com/jguerrero-prog/neurosift-brain.git
+cd neurosift-brain
 npm install
 npm run dev
 ```

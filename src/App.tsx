@@ -78,7 +78,7 @@ export function App() {
           },
           {
             label: "View the code on GitHub",
-            href: "https://github.com/jguerrero-prog/dandi-atlas",
+            href: "https://github.com/jguerrero-prog/neurosift-brain",
             icon: "logo--github",
             iconOnly: true,
             external: true,
