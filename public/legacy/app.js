@@ -51,7 +51,7 @@ function recreateOrbitControls(target) {
 const ATLAS_CONFIGS = {
   allen_ccf: {
     name: "Allen CCF (Mouse)",
-    dataPrefix: "data/atlases/allen_ccf/",
+    dataPrefix: "../data/atlases/allen_ccf/",
     camDist: 18000,
     cameraUp: [0, -1, 0],
     camOffset: [0, 0, 1],  // Z=Right in PIR, lateral view
@@ -67,7 +67,7 @@ const ATLAS_CONFIGS = {
   },
   d99: {
     name: "D99 v2.0 (Macaque)",
-    dataPrefix: "data/atlases/d99/",
+    dataPrefix: "../data/atlases/d99/",
     camDist: 200,
     cameraUp: [0, 0, 1],
     camOffset: [1, 0, 0],  // X=Right in RAS, lateral view
@@ -94,7 +94,7 @@ const ATLAS_CONFIGS = {
   },
   nmt: {
     name: "NMT v2.0 sym (Macaque)",
-    dataPrefix: "data/atlases/nmt/",
+    dataPrefix: "../data/atlases/nmt/",
     camDist: 200,
     cameraUp: [0, 0, 1],
     camOffset: [1, 0, 0],  // X=Right in RAS, lateral view
@@ -110,7 +110,7 @@ const ATLAS_CONFIGS = {
   },
   mebrains: {
     name: "MEBRAINS (Macaque)",
-    dataPrefix: "data/atlases/mebrains/",
+    dataPrefix: "../data/atlases/mebrains/",
     camDist: 200,
     cameraUp: [0, 0, 1],
     camOffset: [1, 0, 0],  // X=Right in RAS, lateral view
@@ -126,7 +126,7 @@ const ATLAS_CONFIGS = {
   },
   whs_sd: {
     name: "WHS-SD v4 (Rat)",
-    dataPrefix: "data/atlases/whs_sd/",
+    dataPrefix: "../data/atlases/whs_sd/",
     // Waxholm space is RAS in mm; rat brain spans ~20 mm AP. Camera distance
     // and clipping picked to comfortably fit the brain at lateral view; tune
     // empirically once the meshes render.
@@ -311,7 +311,7 @@ async function loadAtlas(atlasKey) {
   const v = `?v=${await dataVersion()}`;
   if (atlasChangedSince(gen)) return;
   if (!dandisetTitlesPromise) {
-    dandisetTitlesPromise = fetch(`data/dandiset_titles.json${v}`)
+    dandisetTitlesPromise = fetch(`../data/dandiset_titles.json${v}`)
       .then(r => (r.ok ? r.json() : {}))
       .catch(() => ({}));
   }
@@ -464,7 +464,7 @@ function fetchLastUpdated() {
     // Revalidated on every page load (the file is tiny) so the data key
     // derived from it is current; the files it keys can then sit in the
     // browser cache until the pipeline next runs.
-    lastUpdatedPromise = fetch('data/last_updated.json', { cache: 'no-cache' })
+    lastUpdatedPromise = fetch('../data/last_updated.json', { cache: 'no-cache' })
       .then(r => (r.ok ? r.json() : null))
       .catch(() => null);
   }
@@ -555,7 +555,7 @@ async function setupLanding() {
   }
   let index;
   try {
-    index = await fetchJson(`data/atlases_index.json?v=${await dataVersion()}`);
+    index = await fetchJson(`../data/atlases_index.json?v=${await dataVersion()}`);
   } catch (err) {
     console.error('Failed to load atlases_index.json', err);
     return;
@@ -603,7 +603,7 @@ function renderAtlasCards(grid, atlases, fmt, plural) {
     card.className = 'atlas-card';
     card.dataset.atlasKey = atlas.key;
     card.innerHTML = `
-      <img class="atlas-card-image" src="${escapeHtml(atlas.preview)}" alt="${escapeHtml(atlas.name)} brain preview" loading="lazy">
+      <img class="atlas-card-image" src="../${escapeHtml(atlas.preview)}" alt="${escapeHtml(atlas.name)} brain preview" loading="lazy">
       <div class="atlas-card-body">
         <h3 class="atlas-card-title">${escapeHtml(atlas.name)}</h3>
         <div class="atlas-card-stats">

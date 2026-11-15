@@ -1,0 +1,45 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "typescript",
+    "react",
+    "jsx-a11y",
+    "unicorn",
+    "oxc",
+    "import",
+    "vitest"
+  ],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "error"
+  },
+  "rules": {
+    "no-console": "error",
+    "eqeqeq": "error",
+    "import/no-cycle": "error",
+    "react/style-prop-object": "error",
+    "react/forbid-dom-props": [
+      "error",
+      {
+        "forbid": ["style"]
+      }
+    ],
+    "react/react-in-jsx-scope": "off",
+    "import/no-unassigned-import": [
+      "error",
+      {
+        "allow": ["**/*.css"]
+      }
+    ]
+  },
+  "ignorePatterns": [
+    "data/**",
+    "public/**",
+    "src/ui/**",
+    "src/theme.ts",
+    "src/shared/**",
+    "dist/**",
+    "scripts/**"
+  ]
+}
