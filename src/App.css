@@ -15,12 +15,40 @@
   inline-size: auto;
 }
 
+.atlas-workspace {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-block-size: 0;
+}
+
 .atlas-main {
   display: grid;
-  grid-template-columns: var(--layout-panel-default) minmax(0, 1fr) var(
-      --layout-panel-wide
-    );
+  grid-template-columns:
+    var(--atlas-regions-width, var(--layout-panel-default))
+    minmax(0, 1fr)
+    var(--layout-panel-wide);
+  grid-row: 2;
   min-block-size: 0;
+}
+
+/* The regions panel's edge is a PanelResizer, placed against this panel. */
+.atlas-panel--regions {
+  position: relative;
+}
+
+/* Phones and narrow windows: one panel at a time, chosen with the tabs above. */
+@media (width <= 768px) {
+  .atlas-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .atlas-main > [hidden] {
+    display: none;
+  }
+
+  .atlas-main > .atlas-panel {
+    border-inline: 0;
+  }
 }
 
 .atlas-panel {

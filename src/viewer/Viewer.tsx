@@ -30,6 +30,10 @@ interface ViewerProps {
 }
 
 const NO_ELECTRODES: readonly ElectrodePoint[] = [];
+
+/** The keys the 3D view takes once it has focus; also read to screen readers as its description. */
+const KEYS =
+  "With the 3D view focused: arrow keys rotate, Shift and arrows pan, + and − zoom, Home resets, and 1 to 6 pick Top, Bottom, Front, Back, Left and Right.";
 /** Regions drop to this opacity when electrodes appear, so the meshes don't hide them. */
 const ELECTRODE_VIEW_OPACITY = 50;
 
@@ -194,8 +198,11 @@ export function Viewer({
             </div>
           )}
           <Toggletip title="How to move the brain">
-            Drag to rotate, scroll to zoom and right-drag to pan. Click a region
-            to select it.
+            <p>
+              Drag to rotate, scroll to zoom and right-drag to pan. Click a
+              region to select it.
+            </p>
+            <p>{KEYS}</p>
           </Toggletip>
           <a
             className="atlas-viewer-attribution"
@@ -208,12 +215,18 @@ export function Viewer({
         </>
       }
     >
-      <div className="atlas-viewer-stage">
-        <canvas
-          ref={canvas}
-          className="atlas-viewer-canvas"
-          aria-label={`3D view of the ${config.name} atlas`}
-        />
+      {/* An application, so screen readers pass the arrow keys through to the scene. */}
+      <div
+        className="atlas-viewer-stage"
+        role="application"
+        tabIndex={0}
+        aria-label={`3D view of the ${config.name} atlas`}
+        aria-describedby="atlas-viewer-keys"
+      >
+        <canvas ref={canvas} className="atlas-viewer-canvas" />
+        <p id="atlas-viewer-keys" className="ns-visually-hidden">
+          {KEYS}
+        </p>
         {loading && (
           <div className="atlas-viewer-progress">
             <ProgressBar

@@ -18,6 +18,8 @@ interface RegionPanelProps {
   onSelect: (id: number) => void;
   /** Inside a dandiset: only its regions, counting its subjects. */
   scope?: { ids: ReadonlySet<number>; counts: ReadonlyMap<number, number> };
+  /** The next atlas is loading: the panel stays, so focus stays on the atlas switch, and says so. */
+  loading?: boolean;
 }
 
 const union = (a: string[], b: Iterable<string>) => [...new Set([...a, ...b])];
@@ -30,6 +32,7 @@ export function RegionPanel({
   onAtlasChange,
   onSelect,
   scope,
+  loading = false,
 }: RegionPanelProps) {
   const [query, setQuery] = useState("");
   const [showEmpty, setShowEmpty] = useState(false);
@@ -44,6 +47,26 @@ export function RegionPanel({
     () => buildRegionTree(data, { query, showEmpty, keep, scope }),
     [data, query, showEmpty, keep, scope],
   );
+
+  // A new atlas starts its tree afresh. The panel itself stays mounted, so the atlas switch keeps focus.
+  const [shownAtlas, setShownAtlas] = useState(data.key);
+  if (shownAtlas !== data.key) {
+    setShownAtlas(data.key);
+    setQuery("");
+    setExpanded([String(rootId)]);
+  }
+
+  // Inside a dandiset the tree holds only its regions, so open the paths to all of them, as the original did.
+  const [openedScope, setOpenedScope] = useState(scope);
+  if (openedScope !== scope) {
+    setOpenedScope(scope);
+    if (scope) {
+      const paths = [...scope.ids]
+        .flatMap((id) => ancestorsOf(data, id))
+        .map(String);
+      setExpanded(union(expanded, paths));
+    }
+  }
 
   // A region chosen in the brain, or a new search, opens the path to it. Adjusted while rendering, so it shows at once.
   const [opened, setOpened] = useState({ selection: "", query: "" });
@@ -85,14 +108,16 @@ export function RegionPanel({
           />
         )}
         <output className="atlas-regions-note">
-          {query
-            ? `${tree.matches.toLocaleString("en-US")} ${tree.matches === 1 ? "region matches" : "regions match"}`
-            : scope
-              ? "Regions in this dandiset. Numbers are its subjects."
-              : "Numbers are dandisets, including subregions."}
+          {loading
+            ? `Loading the ${ATLASES[atlas].name} atlas…`
+            : query
+              ? `${tree.matches.toLocaleString("en-US")} ${tree.matches === 1 ? "region matches" : "regions match"}`
+              : scope
+                ? "Regions in this dandiset. Numbers are its subjects."
+                : "Numbers are dandisets, including subregions."}
         </output>
       </div>
-      <div className="atlas-regions-tree">
+      <div className="atlas-regions-tree" aria-busy={loading || undefined}>
         <Tree
           label="Brain regions"
           nodes={tree.nodes}
