@@ -11,7 +11,7 @@ import type { AtlasData } from "../atlas/atlasData";
 import type { AtlasConfig } from "../atlas/configs";
 import { BrainScene, type SceneHover } from "../scene/BrainScene";
 import { VIEWS } from "../scene/views";
-import { usePlotColors, usePlotTheme } from "../shared/plotTheme";
+import { plotColors } from "../shared/plotColors";
 import { HoverReadout } from "./HoverReadout";
 import "./Viewer.css";
 
@@ -40,8 +40,6 @@ export function Viewer({ config, data, selectedIds, onPick }: ViewerProps) {
   const selection = selectedIds.join(",");
   const [hover, setHover] = useState<SceneHover | null>(null);
   const [regionOpacity, setRegionOpacity] = useState(100);
-  const colors = usePlotColors();
-  const { plotTheme, onPlotThemeChange } = usePlotTheme();
 
   useEffect(() => {
     const element = canvas.current;
@@ -51,20 +49,19 @@ export function Viewer({ config, data, selectedIds, onPick }: ViewerProps) {
           onPick: (id) => pick.current(id),
         })
       : null;
+    // The 3D view is always dark, whatever the app theme: pale meshes and electrodes read best on it.
+    const colors = plotColors("dark");
+    brain?.setColors({
+      background: colors.surface,
+      outline: colors.textMuted,
+      electrode: colors.cursor,
+    });
     scene.current = brain;
     return () => {
       brain?.dispose();
       scene.current = null;
     };
   }, []);
-
-  useEffect(() => {
-    scene.current?.setColors({
-      background: colors.surface,
-      outline: colors.textMuted,
-      electrode: colors.cursor,
-    });
-  }, [colors]);
 
   useEffect(() => {
     let current = true;
@@ -102,8 +99,7 @@ export function Viewer({ config, data, selectedIds, onPick }: ViewerProps) {
     <ViewPanel
       label={`${config.name} 3D view`}
       summary={`${config.name}, ${config.species.toLowerCase()}: ${regionsWithData.toLocaleString("en-US")} regions with DANDI data.`}
-      plotTheme={plotTheme}
-      onPlotThemeChange={onPlotThemeChange}
+      plotTheme="dark"
       busy={Boolean(loading)}
       controls={
         <>

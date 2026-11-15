@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { AppBar, StatusBar } from "@ui";
 import { applyTheme, THEME_OPTIONS, useThemeChoice } from "./theme";
-import {
-  PLOT_THEME_OPTIONS,
-  setPlotTheme,
-  usePlotThemeChoice,
-} from "./shared/plotTheme";
 import { fetchLastUpdated } from "./data/fetchData";
 import { Credits } from "./Credits";
 import { Landing } from "./landing/Landing";
@@ -26,7 +21,6 @@ const formatUpdated = (timestamp: string) =>
 export function App() {
   const route = useRoute();
   const theme = useThemeChoice();
-  const viewTheme = usePlotThemeChoice();
   const [updated, setUpdated] = useState<string>();
 
   useEffect(() => {
@@ -44,14 +38,6 @@ export function App() {
         onSelect: () => applyTheme(value),
       })),
     },
-    {
-      label: "3D view",
-      items: PLOT_THEME_OPTIONS.map(({ value, label }) => ({
-        label,
-        checked: viewTheme === value,
-        onSelect: () => setPlotTheme(value),
-      })),
-    },
   ];
 
   return (
@@ -65,7 +51,19 @@ export function App() {
             className="atlas-app-logo"
           />
         }
-        name="DANDI Atlas"
+        name="Neurosift Brain"
+        byline={
+          <>
+            {/* Spaces kept for the link's name; the byline's gap spaces them on screen. */}
+            {"by "}
+            <img
+              src={`${BASE}dandi-atlas-mark.png`}
+              alt=""
+              className="atlas-byline-mark"
+            />
+            {" DANDI Atlas"}
+          </>
+        }
         actions={[
           {
             label: "Display",
@@ -96,7 +94,7 @@ export function App() {
         <Workspace route={route} />
       )}
       <StatusBar
-        version="DANDI Atlas"
+        version="Neurosift Brain"
         items={updated ? [`Data updated ${updated}`] : []}
         details={<Credits />}
       />
