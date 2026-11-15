@@ -1,0 +1,53 @@
+.atlas-app {
+  display: grid;
+  grid-template-rows: var(--layout-appbar-height) minmax(0, 1fr) var(
+      --layout-statusbar-height
+    );
+  block-size: 100dvh;
+}
+
+.atlas-app-logo {
+  block-size: 2rem;
+}
+
+.atlas-main {
+  display: grid;
+  grid-template-columns: var(--layout-panel-default) minmax(0, 1fr) var(
+      --layout-panel-wide
+    );
+  min-block-size: 0;
+}
+
+.atlas-panel {
+  min-block-size: 0;
+  overflow: auto;
+  background: var(--surface-panel);
+}
+
+.atlas-panel:first-child {
+  border-inline-end: var(--border-width-1) solid var(--border-subtle);
+}
+
+.atlas-panel:last-child {
+  border-inline-start: var(--border-width-1) solid var(--border-subtle);
+}
+
+.atlas-viewer {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-inline-size: 0;
+  background: var(--surface-page);
+}
+
+.atlas-credits {
+  max-inline-size: var(--layout-text-max);
+}
+
+.atlas-credits p {
+  margin: 0 0 var(--space-2);
+}
+
+.atlas-credits p:last-child {
+  margin-block-end: 0;
+}

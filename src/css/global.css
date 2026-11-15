@@ -1,0 +1,22 @@
+/* Page-wide defaults; components style themselves from tokens.css. */
+:root {
+  font: var(--type-body);
+  color: var(--text-default);
+  background-color: var(--surface-page);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 20rem;
+}
+
+a {
+  color: var(--text-link);
+}
+
+a:hover {
+  color: var(--text-link-hover);
+}

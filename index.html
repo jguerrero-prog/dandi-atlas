@@ -1,131 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Brain Atlas — DANDI Explorer</title>
-  <!-- favicon.ico carries 16/32/48/64 and is transparent, so it reads on both
-       light and dark tab bars. iOS ignores alpha and composites on black, so the
-       touch icon is the one variant with a solid navy background. -->
-  <link rel="icon" href="favicon.ico" sizes="any">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=10">
-</head>
-<body class="landing-active">
-  <!-- GitHub mark, defined once and referenced by <use> from both the landing
-       page footer and the viewer, so the path data is not duplicated. -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="icon-github" viewBox="0 0 16 16">
-      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-    </symbol>
-  </svg>
-
-  <!-- Atlas landing page: shown on bare load (no ?atlas= and no #hash).
-       Hidden once the user picks a card; deep-link loads skip it. -->
-  <section id="atlas-landing" class="atlas-landing">
-    <header class="atlas-landing-header">
-      <h1>DANDI Brain Atlas Explorer</h1>
-      <p>Pick an atlas to browse dandisets, subjects, and electrode locations in 3D.</p>
-      <p id="landing-last-updated" class="landing-last-updated"></p>
-    </header>
-    <!-- Filled by setupLanding() with one .atlas-species-group per species,
-         each wrapping its own card grid. -->
-    <div id="atlas-landing-groups" class="atlas-landing-groups"></div>
-    <!-- Same two links the viewer carries, so attribution and the repo are
-         reachable from the first screen rather than only after picking an atlas. -->
-    <footer class="atlas-landing-footer">
-      <a href="https://catalystneuro.com" target="_blank" rel="noopener" class="created-by-link">
-        Created by <img src="cn-logo-banner.png" alt="CatalystNeuro" class="cn-logo">
-      </a>
-      <a href="https://github.com/dandi/dandi-atlas" target="_blank" rel="noopener" class="github-link" title="View on GitHub">
-        <svg width="20" height="20" fill="currentColor" aria-hidden="true"><use href="#icon-github"/></svg>
-      </a>
-    </footer>
-  </section>
-
-  <!-- Left sidebar: Hierarchy tree -->
-  <aside id="sidebar-left" class="sidebar">
-    <div class="sidebar-header">
-      <h2>Brain Regions</h2>
-      <select id="atlas-selector" class="atlas-selector">
-        <option value="allen_ccf">Allen CCF (Mouse)</option>
-        <option value="d99">D99 v2.0 (Macaque)</option>
-        <option value="nmt">NMT v2.0 sym (Macaque)</option>
-        <option value="mebrains">MEBRAINS (Macaque)</option>
-        <option value="whs_sd">WHS-SD v4 (Rat)</option>
-      </select>
-      <input type="text" id="search-box" placeholder="Search regions..." autocomplete="off">
-    </div>
-    <div id="dandiset-filter-bar" class="dandiset-filter-bar hidden">
-      <span id="dandiset-filter-label"></span>
-      <button id="dandiset-filter-clear" title="Clear filter">&times;</button>
-    </div>
-    <div id="subject-filter-bar" class="subject-filter-bar hidden">
-      <span id="subject-filter-label"></span>
-      <button id="subject-filter-clear" title="Clear subject filter">&times;</button>
-    </div>
-    <div id="hierarchy-tree" class="tree-container"></div>
-    <div id="resize-handle" class="resize-handle"></div>
-  </aside>
-
-  <!-- Center: 3D viewer -->
-  <main id="viewer">
-    <canvas id="brain-canvas"></canvas>
-    <div id="orient-buttons" class="orient-buttons">
-      <button data-view="dorsal" title="Dorsal (top)">D</button>
-      <button data-view="ventral" title="Ventral (bottom)">V</button>
-      <button data-view="anterior" title="Anterior (front)">A</button>
-      <button data-view="posterior" title="Posterior (back)">P</button>
-      <button data-view="left" title="Left">L</button>
-      <button data-view="right" title="Right">R</button>
-    </div>
-    <div id="viewer-controls" class="viewer-controls">
-      <div class="viewer-control-row">
-        <label for="region-opacity">Regions</label>
-        <input type="range" id="region-opacity" min="0" max="1" step="0.05" value="1">
-      </div>
-      <div id="electrode-control-row" class="viewer-control-row hidden">
-        <label for="electrode-opacity">Electrodes</label>
-        <input type="range" id="electrode-opacity" min="0" max="1" step="0.05" value="1">
-      </div>
-    </div>
-    <a href="https://atlas.brain-map.org/" target="_blank" rel="noopener" class="ccf-attribution">Atlas: Allen Institute CCF</a>
-    <div id="region-visibility-overlay" class="region-visibility-overlay hidden"></div>
-    <div id="tooltip" class="tooltip hidden"></div>
-    <div id="loading-overlay" class="loading-overlay">
-      <div class="spinner"></div>
-      <p id="loading-text">Loading brain atlas...</p>
-    </div>
-    <div id="controls-hint" class="controls-hint">
-      Left-click drag: rotate &middot; Scroll: zoom &middot; Right-click drag: pan &middot; Click region: select
-      <span id="last-updated" class="last-updated"></span>
-    </div>
-    <a href="https://github.com/dandi/dandi-atlas" target="_blank" rel="noopener" class="github-link" title="View on GitHub">
-      <svg width="20" height="20" fill="currentColor" aria-hidden="true"><use href="#icon-github"/></svg>
-    </a>
-    <a href="https://catalystneuro.com" target="_blank" rel="noopener" class="created-by-link">
-      Created by <img src="cn-logo-banner.png" alt="CatalystNeuro" class="cn-logo">
-    </a>
-  </main>
-
-  <!-- Right sidebar: Region info + dandisets -->
-  <aside id="sidebar-right" class="sidebar">
-    <div class="sidebar-header">
-      <h2>Region Details</h2>
-    </div>
-    <div id="region-panel" class="region-panel">
-      <p class="placeholder-text">Click a brain region to view details and associated DANDI datasets.</p>
-    </div>
-  </aside>
-
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-    }
-  }
-  </script>
-  <script type="module" src="app.js?v=32"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DANDI Atlas</title>
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <script>
+      // Applies the saved theme before the first paint; src/theme.ts writes the same key.
+      try {
+        var theme = localStorage.getItem("neurosiftTheme");
+        if (theme === "system")
+          theme = matchMedia("(prefers-contrast: more)").matches
+            ? "high-contrast"
+            : matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "";
+        if (theme === "dark" || theme === "high-contrast")
+          document.documentElement.dataset.theme = theme;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

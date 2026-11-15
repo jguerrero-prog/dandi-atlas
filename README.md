@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" alt="DANDI Atlas Explorer logo" width="120">
+  <img src="public/logo.png" alt="DANDI Atlas Explorer logo" width="120">
 </p>
 
 <h1 align="center">DANDI Brain Atlas Explorer</h1>
@@ -23,13 +23,13 @@ Live at **[atlas.dandiarchive.org](https://atlas.dandiarchive.org)**. There is a
 
 The landing page offers a card per atlas, and the selector in the left sidebar switches between them without a reload.
 
-| Atlas | Species | Source |
-|---|---|---|
-| Allen CCF v3 | Mouse | Allen Institute Common Coordinate Framework |
-| D99 v2.0 | Macaque | Saleem and Logothetis |
-| NMT v2.0 sym | Macaque | D99 labels warped into NMT space |
-| MEBRAINS | Macaque | EBRAINS macaque parcellation |
-| WHS-SD v4 | Rat | Waxholm Space Sprague Dawley |
+| Atlas        | Species | Source                                      |
+| ------------ | ------- | ------------------------------------------- |
+| Allen CCF v3 | Mouse   | Allen Institute Common Coordinate Framework |
+| D99 v2.0     | Macaque | Saleem and Logothetis                       |
+| NMT v2.0 sym | Macaque | D99 labels warped into NMT space            |
+| MEBRAINS     | Macaque | EBRAINS macaque parcellation                |
+| WHS-SD v4    | Rat     | Waxholm Space Sprague Dawley                |
 
 Coverage differs a great deal between them, and the Allen CCF is by far the most populated. Current per-atlas counts of dandisets, files, and regions with data are in [`data/atlases_index.json`](data/atlases_index.json), which the landing page reads directly. They are not repeated here because the nightly job changes them.
 
@@ -54,15 +54,18 @@ The current view lives in the URL hash, so any state can be linked or bookmarked
 
 ## Running Locally
 
-The viewer is static. Three.js loads from a CDN through an import map, so there is no build step and no npm install. The data files are already committed, including the meshes, so a clone is all you need. Note that this makes the clone large, on the order of 400 MB.
+The viewer is a React app built with Vite, and its components, tokens and themes come from [Neurosift](https://github.com/flatironinstitute/neurosift)'s design system (see `scripts/sync-ui.sh`). The data files are already committed, including the meshes, so a clone and an npm install are all you need. Note that the clone is large, on the order of 400 MB.
 
 ```bash
-git clone https://github.com/dandi/dandi-atlas.git
+git clone https://github.com/jguerrero-prog/dandi-atlas.git
 cd dandi-atlas
-python -m http.server 8000
+npm install
+npm run dev
 ```
 
-Then open [http://localhost:8000](http://localhost:8000). A server is required rather than opening `index.html` from disk, because the app uses ES modules and `fetch`.
+Vite serves the `data/` folder at `/data` while it runs. `npm run check`, `npm run lint` and `npm test` run the same checks as CI. A production build copies the data in when `COPY_DATA=1` is set.
+
+The original viewer is kept in `public/legacy/` while the rebuild is under way, and is served at `/legacy/index.html`.
 
 ## Updating the Data
 
@@ -99,9 +102,9 @@ The Allen pipeline predates this arrangement. `update_data.py --mode full` rebui
 ## Repository Layout
 
 ```
-├── index.html                       # Landing page and viewer shell
-├── style.css
-├── app.js                           # Three.js scene, hierarchy tree, panels, routing
+├── index.html                       # App entry
+├── src/                             # React app; src/ui, tokens and themes are synced from Neurosift
+├── public/legacy/                   # The original viewer (index.html, app.js, style.css)
 ├── data/
 │   ├── atlases_index.json           # Landing-page summary, one record per atlas
 │   ├── dandiset_titles.json         # Dandiset ID to title, for every dandiset any atlas lists
