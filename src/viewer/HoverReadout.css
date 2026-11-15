@@ -1,0 +1,29 @@
+/* Placed by the pointer and drawn like Neurosift's data tooltip; region readouts have no series swatches. */
+.atlas-hover {
+  position: absolute;
+  inset-block-start: calc(var(--atlas-hover-y, 0) + var(--space-3));
+  inset-inline-start: calc(var(--atlas-hover-x, 0) + var(--space-3));
+  z-index: 2;
+  display: grid;
+  gap: var(--space-0-5);
+  max-inline-size: 16rem;
+  padding: var(--space-2) var(--space-3);
+  color: var(--text-default);
+  pointer-events: none;
+  background: var(--surface-panel);
+  border: var(--border-width-1) solid var(--border-strong);
+  border-radius: var(--radius-sm);
+}
+
+.atlas-hover p {
+  margin: 0;
+}
+
+.atlas-hover-title {
+  font: var(--type-label-sm);
+}
+
+.atlas-hover-line {
+  font: var(--type-caption);
+  color: var(--text-secondary);
+}

@@ -1,0 +1,44 @@
+.atlas-viewer-stage {
+  position: relative;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: hidden;
+}
+
+.atlas-viewer-canvas {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  touch-action: none;
+}
+
+.atlas-viewer-canvas[data-cursor="region"] {
+  cursor: pointer;
+}
+
+.atlas-viewer-canvas[data-cursor="electrode"] {
+  cursor: crosshair;
+}
+
+.atlas-viewer-opacity {
+  inline-size: 14rem;
+}
+
+.atlas-viewer-attribution {
+  margin-inline-start: auto;
+  font: var(--type-caption);
+}
+
+/* Inside the plot, so it takes the 3D view's theme. */
+.atlas-viewer-progress {
+  position: absolute;
+  inset-block-end: var(--space-4);
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  inline-size: min(24rem, calc(100% - var(--space-6)));
+  padding: var(--space-2) var(--space-3);
+  color: var(--plot-text);
+  background: var(--plot-surface);
+  border: var(--border-width-1) solid var(--plot-grid-minor);
+  border-radius: var(--radius-sm);
+}
