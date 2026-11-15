@@ -1,0 +1,562 @@
+import {
+  AmbientLight,
+  Box3,
+  BufferGeometry,
+  Color,
+  DirectionalLight,
+  DoubleSide,
+  Float32BufferAttribute,
+  FrontSide,
+  Group,
+  Mesh,
+  MeshPhongMaterial,
+  type Object3D,
+  PerspectiveCamera,
+  Points,
+  PointsMaterial,
+  Raycaster,
+  Scene,
+  ShaderMaterial,
+  Vector2,
+  Vector3,
+  WebGLRenderer,
+} from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { MESH_VERSION, type AtlasData } from "../atlas/atlasData";
+import type { AtlasConfig } from "../atlas/configs";
+import { dataUrl } from "../data/fetchData";
+import {
+  baseLook,
+  decideDisplayMode,
+  initialMeshIds,
+  modeLook,
+  type BaseLook,
+  type DisplayMode,
+} from "./displayMode";
+import { cameraFor, type ViewName } from "./views";
+
+/** Colors the scene takes from the 3D view's theme tokens. */
+export interface SceneColors {
+  background: string;
+  outline: string;
+  electrode: string;
+}
+
+export interface ElectrodePoint {
+  coord: [number, number, number];
+  label: string;
+}
+
+export type SceneHover =
+  | { kind: "region"; id: number; x: number; y: number }
+  | { kind: "electrode"; point: ElectrodePoint; x: number; y: number };
+
+interface SceneEvents {
+  onHover: (hover: SceneHover | null) => void;
+  onPick: (id: number) => void;
+}
+
+interface RegionMesh {
+  mesh: Mesh;
+  material: MeshPhongMaterial;
+  base: BaseLook & { themed: boolean };
+  outline?: ShaderMaterial;
+  mode: DisplayMode;
+}
+
+const DRAG_TOLERANCE = 3;
+
+/** Token colors may carry alpha (#rrggbbaa); the scene draws the color and sets opacity itself. */
+const toColor = (value: string) =>
+  new Color(value.trim().slice(0, 7) || "#888888");
+
+const OUTLINE_VERTEX = `
+  varying vec3 vNormal;
+  varying vec3 vViewDir;
+  void main() {
+    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    vNormal = normalize(normalMatrix * normal);
+    vViewDir = normalize(-mvPosition.xyz);
+    gl_Position = projectionMatrix * mvPosition;
+  }`;
+
+const OUTLINE_FRAGMENT = `
+  uniform vec3 uColor;
+  varying vec3 vNormal;
+  varying vec3 vViewDir;
+  void main() {
+    float rim = pow(1.0 - abs(dot(normalize(vNormal), vViewDir)), 2.5);
+    gl_FragColor = vec4(uColor, rim * 0.9);
+  }`;
+
+/**
+ * The 3D brain: region meshes, electrodes, picking and the camera. It knows nothing about panels or the URL;
+ * React tells it what to show and hears back what is hovered or clicked.
+ */
+export class BrainScene {
+  private readonly renderer: WebGLRenderer;
+  private readonly scene = new Scene();
+  private readonly world = new Group();
+  private readonly camera = new PerspectiveCamera(45, 1, 1, 100000);
+  private controls: OrbitControls;
+  private readonly raycaster = new Raycaster();
+  private readonly loader = new GLTFLoader();
+  private readonly resize: ResizeObserver;
+  private readonly meshes = new Map<number, RegionMesh>();
+  private readonly pending = new Map<number, Promise<RegionMesh | null>>();
+  private readonly failed = new Set<number>();
+  private electrodes: Points<BufferGeometry, PointsMaterial> | null = null;
+  private electrodeInfo: ElectrodePoint[] = [];
+  private config: AtlasConfig | null = null;
+  private data: AtlasData | null = null;
+  private generation = 0;
+  private center = new Vector3();
+  private activeIds: ReadonlySet<number> = new Set();
+  /** The opening view: Allen shows every region at its own opacity; the others show the solid brain. */
+  private overview = true;
+  private roiIds: ReadonlySet<number> = new Set();
+  private regionOpacity = 1;
+  private electrodeOpacity = 1;
+  private hovered: number | null = null;
+  private pointerDown: { x: number; y: number } | null = null;
+  private colors: SceneColors = {
+    background: "#ffffff",
+    outline: "#888888",
+    electrode: "#963232",
+  };
+
+  constructor(
+    private readonly canvas: HTMLCanvasElement,
+    private readonly events: SceneEvents,
+  ) {
+    this.renderer = new WebGLRenderer({ canvas, antialias: true });
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.scene.add(this.world);
+    this.scene.add(new AmbientLight(0xffffff, 0.6));
+    const key = new DirectionalLight(0xffffff, 0.8);
+    key.position.set(10000, 10000, 10000);
+    const fill = new DirectionalLight(0xffffff, 0.3);
+    fill.position.set(-10000, -5000, -10000);
+    this.scene.add(key, fill);
+    this.controls = this.makeControls();
+
+    canvas.addEventListener("pointermove", this.handleMove);
+    canvas.addEventListener("pointerleave", this.handleLeave);
+    canvas.addEventListener("pointerdown", this.handleDown);
+    canvas.addEventListener("click", this.handleClick);
+    this.resize = new ResizeObserver(() => this.fit());
+    this.resize.observe(canvas.parentElement ?? canvas);
+    this.fit();
+    this.renderer.setAnimationLoop(() => {
+      this.controls.update();
+      this.renderer.render(this.scene, this.camera);
+    });
+  }
+
+  dispose() {
+    this.generation++;
+    this.renderer.setAnimationLoop(null);
+    this.resize.disconnect();
+    this.canvas.removeEventListener("pointermove", this.handleMove);
+    this.canvas.removeEventListener("pointerleave", this.handleLeave);
+    this.canvas.removeEventListener("pointerdown", this.handleDown);
+    this.canvas.removeEventListener("click", this.handleClick);
+    this.clearMeshes();
+    this.clearElectrodes();
+    this.controls.dispose();
+    this.renderer.dispose();
+  }
+
+  /** Replaces the atlas, loading the outline first and the regions in batches. Resolves false if superseded. */
+  async setAtlas(
+    config: AtlasConfig,
+    data: AtlasData,
+    onProgress: (loaded: number, total: number) => void,
+  ) {
+    const generation = ++this.generation;
+    this.config = config;
+    this.data = data;
+    this.clearMeshes();
+    this.clearElectrodes();
+    this.events.onHover(null);
+    this.activeIds = new Set([data.manifest.root_id]);
+    this.roiIds = new Set();
+    this.overview = true;
+    this.raycaster.params.Points = { threshold: config.electrodePickThreshold };
+    this.camera.near = config.nearPlane;
+    this.camera.far = config.farPlane;
+    this.camera.updateProjectionMatrix();
+
+    const ids = initialMeshIds(data.manifest, config.coordSystem);
+    onProgress(0, ids.length);
+    await this.loadMesh(data.manifest.root_id);
+    if (generation !== this.generation) return false;
+    this.centerOnBrain();
+    // The browser queues the requests over one HTTP/2 connection; each mesh reports as it lands.
+    let loaded = 0;
+    await Promise.all(
+      ids.map((id) =>
+        this.loadMesh(id).then(() => {
+          if (generation === this.generation) onProgress(++loaded, ids.length);
+        }),
+      ),
+    );
+    return generation === this.generation;
+  }
+
+  /** The whole brain, as the atlas opens. */
+  showWholeBrain() {
+    this.overview = true;
+    this.activeIds = new Set(this.data ? [this.data.manifest.root_id] : []);
+    this.roiIds = new Set();
+    this.refresh();
+  }
+
+  /** Shows the given regions as the focus, with optional extra regions as a soft overlay. */
+  setSelection(
+    activeIds: ReadonlySet<number>,
+    roiIds: ReadonlySet<number> = new Set(),
+  ) {
+    this.overview = false;
+    this.activeIds = activeIds;
+    this.roiIds = roiIds;
+    this.refresh();
+  }
+
+  private refresh() {
+    for (const [id, entry] of this.meshes)
+      this.applyMode(entry, this.modeFor(id));
+  }
+
+  /** Spotlights one region: its own mesh, fetched if needed, else its nearest ancestor that has one. */
+  async spotlight(id: number) {
+    const generation = this.generation;
+    const show = () => {
+      const target = this.meshes.has(id)
+        ? id
+        : this.nearestAncestorWithMesh(id);
+      this.setSelection(new Set(target === null ? [] : [target]));
+    };
+    show();
+    if (
+      !this.meshes.has(id) &&
+      !this.failed.has(id) &&
+      !this.data?.manifest.no_mesh?.includes(id)
+    ) {
+      await this.loadMesh(id);
+      if (
+        generation === this.generation &&
+        !this.overview &&
+        this.activeIds.size <= 1
+      )
+        show();
+    }
+  }
+
+  setRegionOpacity(opacity: number) {
+    this.regionOpacity = opacity;
+    this.refresh();
+  }
+
+  setElectrodeOpacity(opacity: number) {
+    this.electrodeOpacity = opacity;
+    if (this.electrodes) {
+      this.electrodes.material.opacity = opacity;
+      this.electrodes.visible = opacity > 0;
+    }
+  }
+
+  setColors(colors: SceneColors) {
+    this.colors = colors;
+    this.renderer.setClearColor(toColor(colors.background), 1);
+    for (const entry of this.meshes.values()) {
+      if (!entry.base.themed) continue;
+      entry.material.color = toColor(colors.outline);
+      entry.outline?.uniforms.uColor.value.copy(toColor(colors.outline));
+    }
+    if (this.electrodes)
+      this.electrodes.material.color = toColor(colors.electrode);
+  }
+
+  setView(view: ViewName) {
+    if (!this.config) return;
+    const { position, up } = cameraFor(
+      view,
+      this.config.coordSystem,
+      this.center.toArray(),
+      this.config.camDist,
+    );
+    this.camera.position.set(...position);
+    this.camera.up.set(...up);
+    this.controls = this.makeControls(this.center);
+  }
+
+  /** Back to the lateral view the atlas opens with. */
+  resetView() {
+    this.centerOnBrain();
+  }
+
+  showElectrodes(points: ElectrodePoint[]) {
+    this.clearElectrodes();
+    if (!this.config || points.length === 0) return;
+    const positions = new Float32Array(points.flatMap((point) => point.coord));
+    const geometry = new BufferGeometry();
+    geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
+    const material = new PointsMaterial({
+      color: toColor(this.colors.electrode),
+      size: this.config.electrodeSize,
+      sizeAttenuation: true,
+      transparent: true,
+      opacity: this.electrodeOpacity,
+    });
+    this.electrodes = new Points(geometry, material);
+    this.electrodeInfo = points;
+    this.world.add(this.electrodes);
+  }
+
+  clearElectrodes() {
+    if (!this.electrodes) return;
+    this.world.remove(this.electrodes);
+    this.electrodes.geometry.dispose();
+    this.electrodes.material.dispose();
+    this.electrodes = null;
+    this.electrodeInfo = [];
+  }
+
+  private makeControls(target?: Vector3) {
+    this.controls?.dispose();
+    const controls = new OrbitControls(this.camera, this.canvas);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
+    controls.rotateSpeed = 0.8;
+    controls.zoomSpeed = 1.2;
+    if (target) {
+      controls.target.copy(target);
+      controls.update();
+    }
+    return controls;
+  }
+
+  private fit() {
+    const box = this.canvas.parentElement ?? this.canvas;
+    const width = box.clientWidth || 1;
+    const height = box.clientHeight || 1;
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(width, height, false);
+  }
+
+  private centerOnBrain() {
+    const root = this.data && this.meshes.get(this.data.manifest.root_id);
+    if (!root || !this.config) return;
+    this.center = new Box3().setFromObject(root.mesh).getCenter(new Vector3());
+    const [dx, dy, dz] = this.config.camOffset;
+    const d = this.config.camDist;
+    this.camera.position.set(
+      this.center.x + dx * d,
+      this.center.y + dy * d,
+      this.center.z + dz * d,
+    );
+    this.camera.up.set(...this.config.cameraUp);
+    this.controls = this.makeControls(this.center);
+  }
+
+  private modeFor(id: number): DisplayMode {
+    if (!this.data || !this.config) return "hidden";
+    if (this.overview && this.config.coordSystem === "allen") return "glass";
+    return decideDisplayMode(id, {
+      rootId: this.data.manifest.root_id,
+      coordSystem: this.config.coordSystem,
+      activeIds: this.activeIds,
+      roiIds: this.roiIds,
+    });
+  }
+
+  private applyMode(entry: RegionMesh, mode: DisplayMode) {
+    entry.mode = mode;
+    if (mode === "silhouette") {
+      entry.outline ??= new ShaderMaterial({
+        uniforms: { uColor: { value: toColor(this.colors.outline) } },
+        vertexShader: OUTLINE_VERTEX,
+        fragmentShader: OUTLINE_FRAGMENT,
+        transparent: true,
+        depthWrite: false,
+        side: FrontSide,
+      });
+      entry.mesh.material = entry.outline;
+      entry.mesh.renderOrder = -1;
+      entry.mesh.visible = true;
+      return;
+    }
+    const look = modeLook(mode, entry.base, this.regionOpacity);
+    const material = entry.material;
+    material.opacity = look.opacity;
+    material.transparent = look.transparent;
+    material.depthWrite = look.depthWrite;
+    material.needsUpdate = true;
+    entry.mesh.material = material;
+    entry.mesh.renderOrder = 0;
+    entry.mesh.visible = look.visible;
+  }
+
+  private loadMesh(id: number): Promise<RegionMesh | null> {
+    const existing = this.meshes.get(id);
+    if (existing) return Promise.resolve(existing);
+    const inFlight = this.pending.get(id);
+    if (inFlight) return inFlight;
+    const generation = this.generation;
+    const config = this.config;
+    const data = this.data;
+    if (!config || !data) return Promise.resolve(null);
+    const url = dataUrl(
+      `atlases/${config.key}/meshes/${id}.glb?v=${MESH_VERSION}`,
+    );
+    const promise = this.loader
+      .loadAsync(url)
+      .then((gltf) => {
+        if (generation !== this.generation) return null;
+        let mesh: Mesh | null = null;
+        gltf.scene.traverse((child) => {
+          if (!mesh && child instanceof Mesh) mesh = child;
+        });
+        if (!mesh) return null;
+        const found: Mesh = mesh;
+        const isRoot = id === data.manifest.root_id;
+        const base = baseLook({
+          isRoot,
+          // The outline never counts as a data region, even if a stale file lists it.
+          region: isRoot ? undefined : data.regions.get(id),
+          structure: data.structures.get(id),
+          coordSystem: config.coordSystem,
+          rootOpacity: config.rootOpacity,
+        });
+        const material = new MeshPhongMaterial({
+          color: base.themed ? toColor(this.colors.outline) : base.color,
+          transparent: true,
+          opacity: base.opacity,
+          wireframe: base.wireframe,
+          side: base.doubleSided ? DoubleSide : FrontSide,
+          depthWrite: base.depthWrite,
+        });
+        found.material = material;
+        const entry: RegionMesh = {
+          mesh: found,
+          material,
+          base,
+          mode: "hidden",
+        };
+        this.world.add(found);
+        this.meshes.set(id, entry);
+        // A mesh that arrives mid-selection takes the current view's mode instead of flashing in.
+        this.applyMode(entry, this.modeFor(id));
+        return entry;
+      })
+      .catch(() => {
+        if (generation === this.generation) this.failed.add(id);
+        return null;
+      })
+      .finally(() => this.pending.delete(id));
+    this.pending.set(id, promise);
+    return promise;
+  }
+
+  private nearestAncestorWithMesh(id: number) {
+    let current = this.data?.structures.get(id)?.parent_structure_id ?? null;
+    while (current !== null) {
+      if (this.meshes.has(current)) return current;
+      current = this.data?.structures.get(current)?.parent_structure_id ?? null;
+    }
+    return null;
+  }
+
+  private clearMeshes() {
+    for (const entry of this.meshes.values()) {
+      this.world.remove(entry.mesh);
+      entry.mesh.geometry.dispose();
+      entry.material.dispose();
+      entry.outline?.dispose();
+    }
+    this.meshes.clear();
+    this.pending.clear();
+    this.failed.clear();
+    this.hovered = null;
+  }
+
+  private ray(event: PointerEvent | MouseEvent) {
+    const rect = this.canvas.getBoundingClientRect();
+    const pointer = new Vector2(
+      ((event.clientX - rect.left) / rect.width) * 2 - 1,
+      -((event.clientY - rect.top) / rect.height) * 2 + 1,
+    );
+    this.raycaster.setFromCamera(pointer, this.camera);
+    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+  }
+
+  /** The region under the pointer: the outline only when nothing else is hit, and never while it is a rim. */
+  private regionHit(includeRoot: boolean) {
+    const rootId = this.data?.manifest.root_id;
+    const ids = new Map<Object3D, number>();
+    for (const [id, entry] of this.meshes) {
+      const pickable =
+        entry.mesh.visible &&
+        (id !== rootId || (includeRoot && entry.mode !== "silhouette"));
+      if (pickable) ids.set(entry.mesh, id);
+    }
+    const hits = this.raycaster
+      .intersectObjects([...ids.keys()], false)
+      .map((hit) => ids.get(hit.object));
+    return hits.find((id) => id !== rootId) ?? hits[0] ?? null;
+  }
+
+  private setHighlight(id: number | null) {
+    if (this.hovered === id) return;
+    const previous =
+      this.hovered === null ? undefined : this.meshes.get(this.hovered);
+    previous?.material.emissive.set(0x000000);
+    this.hovered = id;
+    const next = id === null ? undefined : this.meshes.get(id);
+    // Brighten the region in its own color, so hover reads in either theme.
+    next?.material.emissive.copy(next.material.color).multiplyScalar(0.35);
+  }
+
+  private readonly handleMove = (event: PointerEvent) => {
+    const at = this.ray(event);
+    if (this.electrodes?.visible) {
+      const hit = this.raycaster.intersectObject(this.electrodes, false)[0];
+      const point =
+        hit?.index === undefined ? undefined : this.electrodeInfo[hit.index];
+      if (point) {
+        this.setHighlight(null);
+        this.canvas.dataset.cursor = "electrode";
+        this.events.onHover({ kind: "electrode", point, ...at });
+        return;
+      }
+    }
+    const id = this.regionHit(true);
+    this.setHighlight(id);
+    this.canvas.dataset.cursor = id === null ? "" : "region";
+    this.events.onHover(id === null ? null : { kind: "region", id, ...at });
+  };
+
+  private readonly handleLeave = () => {
+    this.setHighlight(null);
+    this.events.onHover(null);
+  };
+
+  private readonly handleDown = (event: PointerEvent) => {
+    this.pointerDown = { x: event.clientX, y: event.clientY };
+  };
+
+  private readonly handleClick = (event: MouseEvent) => {
+    if (this.pointerDown) {
+      const dx = event.clientX - this.pointerDown.x;
+      const dy = event.clientY - this.pointerDown.y;
+      if (dx * dx + dy * dy > DRAG_TOLERANCE ** 2) return;
+    }
+    this.ray(event);
+    // Clicking the outline does nothing: it is a large target that drags would hit by accident.
+    const id = this.regionHit(false);
+    if (id !== null) this.events.onPick(id);
+  };
+}
