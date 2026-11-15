@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Alert,
   Breadcrumbs,
+  Button,
   Checkbox,
   DescriptionList,
   Disclosure,
@@ -20,17 +21,17 @@ import {
   type Subject,
 } from "../dandisets/dandisetModel";
 import type { DandisetView } from "../dandisets/dandisetView";
+import { neurosiftDandiset, neurosiftFile } from "../neurosift";
 import { regionAcronym, regionName } from "../regions/regionTree";
 import { navigateHref, routeHref, type Route } from "../route";
 import "./Details.css";
 
-type AtlasRoute = Extract<Route, { page: "atlas" }>;
 const PAGE = 20;
 const plural = (count: number, word: string) =>
   `${count.toLocaleString("en-US")} ${word}${count === 1 ? "" : "s"}`;
 
 interface DandisetDetailsProps {
-  route: AtlasRoute & { dandiset: string };
+  route: Route & { dandiset: string };
   data: AtlasData;
   titles: ReadonlyMap<string, string>;
   files: DandisetFiles;
@@ -103,13 +104,8 @@ export function DandisetDetails({
       />
       <header className="atlas-details-head">
         <h2 className="atlas-details-title">{title}</h2>
-        <a
-          href={`https://dandiarchive.org/dandiset/${dandiset}`}
-          target="_blank"
-          rel="noreferrer"
-          className="atlas-details-link"
-        >
-          View on DANDI Archive
+        <a href={neurosiftDandiset(dandiset)} className="atlas-details-link">
+          Open in Neurosift
         </a>
       </header>
       {filter !== undefined && (
@@ -158,14 +154,22 @@ export function DandisetDetails({
         </Alert>
       )}
       {session && (
-        <DescriptionList
-          label="Session"
-          layout="stacked"
-          items={[
-            { term: "File", value: session.path, code: true },
-            { term: "Asset", value: session.asset_id, code: true },
-          ]}
-        />
+        <section className="atlas-session-detail" aria-label="Session">
+          <Button
+            variant="primary"
+            href={neurosiftFile(dandiset, session.asset_id)}
+          >
+            Open this file in Neurosift
+          </Button>
+          <DescriptionList
+            label="Session"
+            layout="stacked"
+            items={[
+              { term: "File", value: session.path, code: true },
+              { term: "Asset", value: session.asset_id, code: true },
+            ]}
+          />
+        </section>
       )}
       {view && files.status === "ready" && (
         <>

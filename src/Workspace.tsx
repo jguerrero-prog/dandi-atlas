@@ -13,13 +13,11 @@ import { navigate, routeHref, type Route } from "./route";
 import { plotColors } from "./shared/plotColors";
 import { Viewer } from "./viewer/Viewer";
 
-type AtlasRoute = Extract<Route, { page: "atlas" }>;
-
 const changeAtlas = (key: AtlasKey) =>
   navigate({ page: "atlas", atlas: key, regions: [], comparing: false });
 
 /** One atlas: regions on the left, the brain in the middle, details on the right. */
-export function Workspace({ route }: { route: AtlasRoute }) {
+export function Workspace({ route }: { route: Route }) {
   const config = ATLASES[route.atlas];
   const [attempt, setAttempt] = useState(0);
   const atlas = useAtlasData(route.atlas, attempt);

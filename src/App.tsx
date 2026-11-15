@@ -3,7 +3,6 @@ import { AppBar, StatusBar } from "@ui";
 import { applyTheme, THEME_OPTIONS, useThemeChoice } from "./theme";
 import { fetchLastUpdated } from "./data/fetchData";
 import { Credits } from "./Credits";
-import { Landing } from "./landing/Landing";
 import { useRoute } from "./route";
 import { Workspace } from "./Workspace";
 import "./App.css";
@@ -86,13 +85,7 @@ export function App() {
           },
         ]}
       />
-      {route.page === "landing" ? (
-        <main className="atlas-page">
-          <Landing />
-        </main>
-      ) : (
-        <Workspace route={route} />
-      )}
+      <Workspace route={route} />
       <StatusBar
         version="Neurosift Brain"
         items={updated ? [`Data updated ${updated}`] : []}

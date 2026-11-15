@@ -2,8 +2,16 @@ import { describe, expect, it } from "vitest";
 import { parseRoute, routeHref } from "./route";
 
 describe("parseRoute", () => {
-  it("opens the landing page on a bare address", () => {
-    expect(parseRoute("", "")).toEqual({ page: "landing" });
+  it("opens the viewer on the Allen CCF from a bare address", () => {
+    expect(parseRoute("", "")).toEqual({
+      page: "atlas",
+      atlas: "allen_ccf",
+      regions: [],
+      comparing: false,
+      dandiset: undefined,
+      subject: undefined,
+      session: undefined,
+    });
   });
 
   it("reads the original viewer's links", () => {
@@ -47,7 +55,6 @@ describe("routeHref", () => {
   };
 
   it("writes routes the way the original viewer did", () => {
-    expect(routeHref({ page: "landing" }, "/")).toBe("/");
     expect(routeHref(atlas, "/")).toBe("/?atlas=allen_ccf");
     expect(
       routeHref({ ...atlas, regions: [672, 385], comparing: true }, "/x/"),
