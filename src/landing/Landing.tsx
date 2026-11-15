@@ -41,11 +41,11 @@ export function Landing() {
   }, []);
 
   return (
-    <Page title="DANDI Atlas">
+    <Page title="Neurosift Brain">
       <p className="atlas-landing-lead">
-        Find data in the DANDI Archive by brain region. Pick an atlas to see
-        which regions have recordings, then open the dandisets, subjects and
-        sessions behind them.
+        Find data in the DANDI Archive by brain region, on the maps of DANDI
+        Atlas. Pick an atlas to see which regions have recordings, then open the
+        dandisets, subjects and sessions behind them.
       </p>
       {state.status === "loading" && (
         <LoadingState label="Loading atlases" phase={phase} />

@@ -51,7 +51,19 @@ export function App() {
             className="atlas-app-logo"
           />
         }
-        name="DANDI Atlas"
+        name="Neurosift Brain"
+        byline={
+          <>
+            {/* Spaces kept for the link's name; the byline's gap spaces them on screen. */}
+            {"by "}
+            <img
+              src={`${BASE}dandi-atlas-mark.png`}
+              alt=""
+              className="atlas-byline-mark"
+            />
+            {" DANDI Atlas"}
+          </>
+        }
         actions={[
           {
             label: "Display",
@@ -82,7 +94,7 @@ export function App() {
         <Workspace route={route} />
       )}
       <StatusBar
-        version="DANDI Atlas"
+        version="Neurosift Brain"
         items={updated ? [`Data updated ${updated}`] : []}
         details={<Credits />}
       />
