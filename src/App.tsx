@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { AppBar, StatusBar } from "@ui";
 import { applyTheme, THEME_OPTIONS, useThemeChoice } from "./theme";
-import {
-  PLOT_THEME_OPTIONS,
-  setPlotTheme,
-  usePlotThemeChoice,
-} from "./shared/plotTheme";
 import { fetchLastUpdated } from "./data/fetchData";
 import { Credits } from "./Credits";
 import { Landing } from "./landing/Landing";
@@ -26,7 +21,6 @@ const formatUpdated = (timestamp: string) =>
 export function App() {
   const route = useRoute();
   const theme = useThemeChoice();
-  const viewTheme = usePlotThemeChoice();
   const [updated, setUpdated] = useState<string>();
 
   useEffect(() => {
@@ -42,14 +36,6 @@ export function App() {
         label,
         checked: theme === value,
         onSelect: () => applyTheme(value),
-      })),
-    },
-    {
-      label: "3D view",
-      items: PLOT_THEME_OPTIONS.map(({ value, label }) => ({
-        label,
-        checked: viewTheme === value,
-        onSelect: () => setPlotTheme(value),
       })),
     },
   ];

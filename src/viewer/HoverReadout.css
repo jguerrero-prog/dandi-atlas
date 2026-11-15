@@ -8,10 +8,10 @@
   gap: var(--space-0-5);
   max-inline-size: 16rem;
   padding: var(--space-2) var(--space-3);
-  color: var(--text-default);
+  color: var(--plot-text);
   pointer-events: none;
-  background: var(--surface-panel);
-  border: var(--border-width-1) solid var(--border-strong);
+  background: var(--plot-surface);
+  border: var(--border-width-1) solid var(--plot-grid-major);
   border-radius: var(--radius-sm);
 }
 
@@ -25,5 +25,5 @@
 
 .atlas-hover-line {
   font: var(--type-caption);
-  color: var(--text-secondary);
+  color: var(--plot-text-muted);
 }
