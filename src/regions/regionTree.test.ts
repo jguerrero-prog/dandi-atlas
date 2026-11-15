@@ -139,6 +139,27 @@ describe("buildRegionTree", () => {
   });
 });
 
+describe("buildRegionTree inside a dandiset", () => {
+  it("shows only the dandiset's regions, counting its subjects", () => {
+    const tree = buildRegionTree(data, {
+      query: "",
+      showEmpty: false,
+      keep: new Set(),
+      scope: { ids: new Set([242]), counts: new Map([[242, 3]]) },
+    });
+    expect(names(tree.nodes)).toEqual([
+      "Whole brain",
+      "Striatum",
+      "Lateral septal nucleus",
+    ]);
+    const septal = tree.nodes[0].children![0].children![0];
+    expect(septal).toMatchObject({
+      size: "3",
+      hint: "Lateral septal nucleus: 3 subjects in this dandiset",
+    });
+  });
+});
+
 describe("region helpers", () => {
   it("walks up to the root", () => {
     expect(ancestorsOf(data, 672)).toEqual([997, 477]);

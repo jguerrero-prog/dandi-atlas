@@ -19,10 +19,13 @@ export function DandisetList({
   items,
   data,
   titles,
+  href,
 }: {
   items: DandisetItem[];
   data: AtlasData;
   titles: ReadonlyMap<string, string>;
+  /** Where a dandiset opens: inside the atlas, with its subjects and sessions. */
+  href: (id: string) => string;
 }) {
   const [shown, setShown] = useState(PAGE);
   if (items.length === 0)
@@ -36,7 +39,7 @@ export function DandisetList({
             archive="DANDI"
             id={id}
             title={titles.get(id) ?? `Dandiset ${id}`}
-            href={`https://dandiarchive.org/dandiset/${id}`}
+            href={href(id)}
             meta={`${plural(data.dandisetRegions.get(id)?.length ?? 0, "region")} in this atlas`}
             modified={note}
             types={

@@ -17,6 +17,7 @@ interface RegionDetailsProps {
   comparing: boolean;
   onSelect: (ids: number[]) => void;
   onCompare: (comparing: boolean) => void;
+  dandisetHref: (id: string) => string;
 }
 
 const n = (count: number) => count.toLocaleString("en-US");
@@ -37,6 +38,7 @@ function SingleDetails({
   selectedIds,
   onSelect,
   onCompare,
+  dandisetHref,
 }: RegionDetailsProps) {
   const rootId = data.manifest.root_id;
   const id = selectedIds.at(-1) ?? rootId;
@@ -101,7 +103,13 @@ function SingleDetails({
         </Button>
       </div>
       <h3 className="atlas-details-subtitle">Dandisets</h3>
-      <DandisetList key={id} items={items} data={data} titles={titles} />
+      <DandisetList
+        key={id}
+        items={items}
+        data={data}
+        titles={titles}
+        href={dandisetHref}
+      />
     </div>
   );
 }
@@ -112,6 +120,7 @@ function CompareDetails({
   selectedIds,
   onSelect,
   onCompare,
+  dandisetHref,
 }: RegionDetailsProps) {
   const rootId = data.manifest.root_id;
   const ids = selectedIds.filter((id) => id !== rootId);
@@ -173,6 +182,7 @@ function CompareDetails({
         items={items}
         data={data}
         titles={titles}
+        href={dandisetHref}
       />
     </div>
   );

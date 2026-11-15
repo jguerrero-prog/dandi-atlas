@@ -16,6 +16,8 @@ interface RegionPanelProps {
   selectedIds: readonly number[];
   onAtlasChange: (atlas: AtlasKey) => void;
   onSelect: (id: number) => void;
+  /** Inside a dandiset: only its regions, counting its subjects. */
+  scope?: { ids: ReadonlySet<number>; counts: ReadonlyMap<number, number> };
 }
 
 const union = (a: string[], b: Iterable<string>) => [...new Set([...a, ...b])];
@@ -27,6 +29,7 @@ export function RegionPanel({
   selectedIds,
   onAtlasChange,
   onSelect,
+  scope,
 }: RegionPanelProps) {
   const [query, setQuery] = useState("");
   const [showEmpty, setShowEmpty] = useState(false);
@@ -38,8 +41,8 @@ export function RegionPanel({
     [selection],
   );
   const tree = useMemo(
-    () => buildRegionTree(data, { query, showEmpty, keep }),
-    [data, query, showEmpty, keep],
+    () => buildRegionTree(data, { query, showEmpty, keep, scope }),
+    [data, query, showEmpty, keep, scope],
   );
 
   // A region chosen in the brain, or a new search, opens the path to it. Adjusted while rendering, so it shows at once.
@@ -74,15 +77,19 @@ export function RegionPanel({
           onChange={setQuery}
           onSearch={setQuery}
         />
-        <Checkbox
-          label="Show regions without data"
-          checked={showEmpty}
-          onChange={setShowEmpty}
-        />
+        {!scope && (
+          <Checkbox
+            label="Show regions without data"
+            checked={showEmpty}
+            onChange={setShowEmpty}
+          />
+        )}
         <output className="atlas-regions-note">
           {query
             ? `${tree.matches.toLocaleString("en-US")} ${tree.matches === 1 ? "region matches" : "regions match"}`
-            : "Numbers are dandisets, including subregions."}
+            : scope
+              ? "Regions in this dandiset. Numbers are its subjects."
+              : "Numbers are dandisets, including subregions."}
         </output>
       </div>
       <div className="atlas-regions-tree">

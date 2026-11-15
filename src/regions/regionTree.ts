@@ -58,6 +58,8 @@ interface TreeOptions {
   showEmpty: boolean;
   /** Regions that stay visible whatever the filter, such as the selection. */
   keep: ReadonlySet<number>;
+  /** Inside a dandiset: only its regions, each counting the dandiset's subjects that record there. */
+  scope?: { ids: ReadonlySet<number>; counts: ReadonlyMap<number, number> };
 }
 
 /**
@@ -66,7 +68,7 @@ interface TreeOptions {
  */
 export function buildRegionTree(
   data: AtlasData,
-  { query, showEmpty, keep }: TreeOptions,
+  { query, showEmpty, keep, scope }: TreeOptions,
 ) {
   const needle = query.trim().toLowerCase();
   const matchIds = new Set<number>();
@@ -89,7 +91,9 @@ export function buildRegionTree(
       .map(visit)
       .filter((child): child is TreeNode => child !== null);
     const isRoot = node.id === data.manifest.root_id;
-    const shownByData = showEmpty || isRoot || hasData(data, node.id);
+    const shownByData = scope
+      ? isRoot || scope.ids.has(node.id)
+      : showEmpty || isRoot || hasData(data, node.id);
     const isMatch = needle !== "" && !isRoot && matches(node);
     if (isMatch && shownByData) matchIds.add(node.id);
     const shown = needle
@@ -101,15 +105,21 @@ export function buildRegionTree(
     if (!shown) return null;
     if (needle && children.length > 0) open.add(node.id);
     const region = data.regions.get(node.id);
-    const count =
-      region && hasData(data, node.id) ? regionTotals(region).dandisets : null;
+    const count = scope
+      ? (scope.counts.get(node.id) ?? null)
+      : region && hasData(data, node.id)
+        ? regionTotals(region).dandisets
+        : null;
     return {
       id: String(node.id),
       name: node.name,
       kind: children.length > 0 ? "folder" : "file",
       size: count === null ? undefined : count.toLocaleString("en-US"),
       swatch: node.color_hex_triplet ? `#${node.color_hex_triplet}` : undefined,
-      hint: regionHint(data, node.id),
+      hint:
+        scope && count !== null
+          ? `${regionName(data, node.id)}: ${plural(count, "subject")} in this dandiset`
+          : regionHint(data, node.id),
       children: children.length > 0 ? children : undefined,
     };
   };

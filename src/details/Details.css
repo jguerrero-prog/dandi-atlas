@@ -56,3 +56,93 @@
   margin: 0;
   list-style: none;
 }
+
+.atlas-subjects {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.atlas-subject-list,
+.atlas-session-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.atlas-session-list {
+  padding-inline-start: var(--space-4);
+}
+
+/* Subject and session rows: the whole row is the button, like a tree row. */
+.atlas-subject,
+.atlas-session {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  align-items: center;
+  inline-size: 100%;
+  min-block-size: var(--layout-row-default);
+  padding: var(--space-2) var(--space-3);
+  font: var(--type-body-sm);
+  color: var(--text-default);
+  text-align: start;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-block-end: var(--border-width-1) solid var(--border-subtle);
+}
+
+.atlas-subject:hover,
+.atlas-session:hover {
+  background: var(--surface-row-hover);
+}
+
+.atlas-subject[aria-current="true"],
+.atlas-session[aria-current="true"] {
+  color: var(--text-on-inverse);
+  background: var(--surface-row-selected);
+}
+
+.atlas-subject:focus-visible,
+.atlas-session:focus-visible {
+  outline: var(--border-width-2) solid var(--border-focus);
+  outline-offset: calc(var(--border-width-2) * -1);
+}
+
+.atlas-subject-name {
+  font: var(--type-code-sm);
+}
+
+.atlas-session-name {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.atlas-subject-meta {
+  margin-inline-start: auto;
+  font: var(--type-caption);
+  color: var(--text-secondary);
+}
+
+[aria-current="true"] .atlas-subject-meta {
+  color: inherit;
+}
+
+/* The session's electrode color in the 3D view, so rows and dots match. */
+.atlas-session-swatch {
+  flex: none;
+  inline-size: var(--space-3);
+  block-size: var(--space-3);
+  background: var(--atlas-session-color);
+  border-radius: 50%;
+}
+
+.atlas-session-swatch[data-empty] {
+  background: transparent;
+}
+
+.atlas-visibility {
+  display: grid;
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+}
