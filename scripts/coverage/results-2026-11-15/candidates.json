@@ -1,0 +1,2588 @@
+[
+ {
+  "id": "000005",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "CurrentClampStimulusSeries",
+   "CurrentClampSeries",
+   "OptogeneticSeries",
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "000006",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup",
+   "BehavioralEvents"
+  ]
+ },
+ {
+  "id": "000007",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000009",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup",
+   "ProcessingModule",
+   "BehavioralTimeSeries",
+   "CurrentClampStimulusSeries",
+   "OptogeneticSeries"
+  ]
+ },
+ {
+  "id": "000010",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "BehavioralTimeSeries",
+   "Units",
+   "ElectrodeGroup",
+   "BehavioralEvents",
+   "PlaneSegmentation"
+  ]
+ },
+ {
+  "id": "000011",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "BehavioralEvents",
+   "ElectrodeGroup",
+   "Units",
+   "BehavioralTimeSeries"
+  ]
+ },
+ {
+  "id": "000015",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "BehavioralEvents",
+   "PlaneSegmentation"
+  ]
+ },
+ {
+  "id": "000028",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries",
+   "Units"
+  ]
+ },
+ {
+  "id": "000029",
+  "species": [
+   "Macaca mulatta - Rhesus monkey",
+   "Mus musculus - House mouse",
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ElectrodeGroup",
+   "BehavioralEvents",
+   "Units"
+  ]
+ },
+ {
+  "id": "000034",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "Units",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "000041",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "DecompositionSeries",
+   "LFP",
+   "SpikeEventSeries",
+   "ElectricalSeries",
+   "ProcessingModule",
+   "Units",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000044",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "LFP",
+   "ElectrodeGroup",
+   "ProcessingModule",
+   "Units",
+   "Position",
+   "ElectricalSeries",
+   "SpatialSeries"
+  ]
+ },
+ {
+  "id": "000045",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "BehavioralTimeSeries",
+   "ProcessingModule",
+   "DecompositionSeries",
+   "Position",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000053",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "LFP",
+   "Position",
+   "Units",
+   "ElectrodeGroup",
+   "EyeTracking",
+   "SpatialSeries",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "000054",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "ProcessingModule",
+   "BehavioralTimeSeries",
+   "OpticalChannel",
+   "PlaneSegmentation"
+  ]
+ },
+ {
+  "id": "000059",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "LFP",
+   "Position",
+   "ElectricalSeries",
+   "SpatialSeries",
+   "ElectrodeGroup",
+   "Units",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "000060",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "Units",
+   "BehavioralEvents"
+  ]
+ },
+ {
+  "id": "000061",
+  "species": [
+   "Brown rat"
+  ],
+  "variables": [
+   "Units",
+   "LFP",
+   "ElectricalSeries",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "000067",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup",
+   "ProcessingModule",
+   "Units",
+   "LFP",
+   "Position",
+   "SpatialSeries"
+  ]
+ },
+ {
+  "id": "000114",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ElectricalSeries",
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "000115",
+  "species": [
+   "Rat; norway rat; rats; brown rat"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "Position"
+  ]
+ },
+ {
+  "id": "000121",
+  "species": [
+   "Rhesus monkey"
+  ],
+  "variables": [
+   "Units",
+   "LFP",
+   "Position"
+  ]
+ },
+ {
+  "id": "000127",
+  "species": [
+   "Rhesus monkey"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "Units",
+   "SpatialSeries",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "000130",
+  "species": [
+   "Rhesus monkey"
+  ],
+  "variables": [
+   "Units"
+  ]
+ },
+ {
+  "id": "000149",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "Position",
+   "Units",
+   "BehavioralTimeSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000166",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "Units",
+   "LFP"
+  ]
+ },
+ {
+  "id": "000167",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "PlaneSegmentation",
+   "ProcessingModule",
+   "ImagingPlane",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "000168",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "PlaneSegmentation",
+   "CurrentClampStimulusSeries",
+   "CurrentClampSeries",
+   "TwoPhotonSeries",
+   "ProcessingModule",
+   "VoltageClampStimulusSeries",
+   "VoltageClampSeries"
+  ]
+ },
+ {
+  "id": "000173",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units"
+  ]
+ },
+ {
+  "id": "000206",
+  "species": [
+   "House mouse"
+  ],
+  "variables": [
+   "SpatialSeries",
+   "ImagingPlane",
+   "Position",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "000219",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "BehavioralEpochs",
+   "PlaneSegmentation",
+   "BehavioralTimeSeries",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "000221",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "SpikeEventSeries",
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "000223",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "PlaneSegmentation",
+   "ElectrodeGroup",
+   "ProcessingModule",
+   "ElectricalSeries",
+   "TwoPhotonSeries",
+   "Units"
+  ]
+ },
+ {
+  "id": "000226",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units",
+   "BehavioralTimeSeries",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "000230",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "CompassDirection",
+   "Units",
+   "ElectrodeGroup",
+   "SpatialSeries",
+   "ElectricalSeries",
+   "BehavioralTimeSeries",
+   "ProcessingModule",
+   "LFP",
+   "Position"
+  ]
+ },
+ {
+  "id": "000231",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "BehavioralTimeSeries",
+   "BehavioralEvents",
+   "ProcessingModule",
+   "Units",
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "000232",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "Units",
+   "LFP",
+   "ProcessingModule",
+   "ElectrodeGroup",
+   "BehavioralTimeSeries"
+  ]
+ },
+ {
+  "id": "000233",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ProcessingModule",
+   "LFP",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000239",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "BehavioralTimeSeries",
+   "ProcessingModule",
+   "Units"
+  ]
+ },
+ {
+  "id": "000244",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "OpticalChannel",
+   "TwoPhotonSeries"
+  ]
+ },
+ {
+  "id": "000246",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OpticalChannel",
+   "TwoPhotonSeries",
+   "PlaneSegmentation",
+   "ProcessingModule",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "000249",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OpticalChannel",
+   "ImagingPlane",
+   "TwoPhotonSeries"
+  ]
+ },
+ {
+  "id": "000251",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "SpatialSeries",
+   "ProcessingModule",
+   "Units"
+  ]
+ },
+ {
+  "id": "000294",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ProcessingModule",
+   "CurrentClampSeries",
+   "CurrentClampStimulusSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000301",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "SpatialSeries",
+   "ProcessingModule",
+   "Units",
+   "ElectrodeGroup",
+   "Position"
+  ]
+ },
+ {
+  "id": "000336",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "ProcessingModule",
+   "OpticalChannel",
+   "PlaneSegmentation",
+   "TwoPhotonSeries"
+  ]
+ },
+ {
+  "id": "000339",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ElectricalSeries",
+   "LFP",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000362",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "OpticalChannel",
+   "ImagingPlane",
+   "TwoPhotonSeries",
+   "PlaneSegmentation",
+   "CurrentClampStimulusSeries",
+   "CurrentClampSeries",
+   "VoltageClampSeries",
+   "VoltageClampStimulusSeries"
+  ]
+ },
+ {
+  "id": "000363",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "BehavioralTimeSeries",
+   "BehavioralEvents",
+   "ElectrodeGroup",
+   "Units",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "000399",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000408",
+  "species": [
+   "Rattus norvegicus - Norway rat",
+   "Unidentified"
+  ],
+  "variables": [
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000410",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "SpatialSeries",
+   "ProcessingModule",
+   "Position",
+   "BehavioralEvents",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "000411",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000454",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "TwoPhotonSeries",
+   "ImagingPlane",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "000463",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "LFP",
+   "ElectricalSeries",
+   "ProcessingModule",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000465",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "000483",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "CompassDirection",
+   "OpticalChannel",
+   "PlaneSegmentation",
+   "SpatialSeries",
+   "ImagingPlane",
+   "Position",
+   "ProcessingModule",
+   "TwoPhotonSeries"
+  ]
+ },
+ {
+  "id": "000491",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "TwoPhotonSeries",
+   "ImagingPlane",
+   "OpticalChannel",
+   "ProcessingModule",
+   "PlaneSegmentation"
+  ]
+ },
+ {
+  "id": "000529",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000544",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "BehavioralEvents",
+   "BehavioralTimeSeries",
+   "Units",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000546",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "000547",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OpticalChannel",
+   "ImagingPlane",
+   "ProcessingModule",
+   "TwoPhotonSeries"
+  ]
+ },
+ {
+  "id": "000554",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "000559",
+  "species": [
+   "Homo sapiens - Human",
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "OpticalChannel",
+   "Position",
+   "CompassDirection",
+   "OptogeneticSeries",
+   "SpatialSeries",
+   "ProcessingModule",
+   "OptogeneticStimulusSite",
+   "RoiResponseSeries"
+  ]
+ },
+ {
+  "id": "000572",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OptogeneticSeries",
+   "SpikeEventSeries",
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "000618",
+  "species": [
+   "Mus musculus - House mouse",
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units",
+   "ElectricalSeries",
+   "ElectrodeGroup",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "000620",
+  "species": [
+   "Macaca mulatta - Rhesus monkey"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup",
+   "ProcessingModule",
+   "Units",
+   "SpatialSeries"
+  ]
+ },
+ {
+  "id": "000624",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "Units",
+   "BehavioralEvents"
+  ]
+ },
+ {
+  "id": "000629",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Position",
+   "ElectricalSeries",
+   "ProcessingModule",
+   "SpatialSeries",
+   "BehavioralEvents"
+  ]
+ },
+ {
+  "id": "000637",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000683",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "PlaneSegmentation",
+   "OpticalChannel",
+   "ProcessingModule",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "000687",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "000689",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ProcessingModule",
+   "ElectricalSeries",
+   "Units"
+  ]
+ },
+ {
+  "id": "000691",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "TwoPhotonSeries",
+   "ImagingPlane",
+   "ProcessingModule",
+   "PlaneSegmentation",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "000696",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "000710",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000711",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ImagingPlane",
+   "PlaneSegmentation",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "000713",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "Units",
+   "ElectricalSeries",
+   "LFP"
+  ]
+ },
+ {
+  "id": "000723",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ImagingPlane",
+   "PlaneSegmentation",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "000774",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000785",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OpticalChannel",
+   "ProcessingModule",
+   "PlaneSegmentation",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "000876",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000892",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000894",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OptogeneticSeries",
+   "Units",
+   "ElectrodeGroup",
+   "SpikeEventSeries"
+  ]
+ },
+ {
+  "id": "000897",
+  "species": [
+   "Macaca mulatta - Rhesus monkey"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup",
+   "SpatialSeries",
+   "ProcessingModule",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "000931",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units"
+  ]
+ },
+ {
+  "id": "000932",
+  "species": [
+   "Sus scrofa domesticus - Domestic pig",
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000935",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries",
+   "OpticalChannel",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "000943",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "000945",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "000946",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000955",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "000957",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "000986",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "PupilTracking",
+   "Units"
+  ]
+ },
+ {
+  "id": "000987",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "SpatialSeries",
+   "Position",
+   "Units",
+   "CompassDirection",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001044",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001052",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units"
+  ]
+ },
+ {
+  "id": "001054",
+  "species": [
+   "Macaca mulatta - Rhesus monkey"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001069",
+  "species": [
+   "Macaca mulatta - Rhesus monkey"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001073",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001074",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "PlaneSegmentation",
+   "ProcessingModule",
+   "OpticalChannel",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "001092",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "TwoPhotonSeries",
+   "ImagingPlane",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "001170",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "SpatialSeries",
+   "ProcessingModule",
+   "PlaneSegmentation",
+   "OpticalChannel",
+   "TwoPhotonSeries",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "001171",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001172",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "PupilTracking",
+   "PlaneSegmentation",
+   "OpticalChannel",
+   "SpatialSeries",
+   "ProcessingModule",
+   "ImagingPlane",
+   "EyeTracking"
+  ]
+ },
+ {
+  "id": "001174",
+  "species": [
+   "Macaca mulatta - Rhesus monkey"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "PlaneSegmentation",
+   "OpticalChannel",
+   "ImagingPlane",
+   "OnePhotonSeries"
+  ]
+ },
+ {
+  "id": "001176",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "PlaneSegmentation",
+   "EyeTracking",
+   "PupilTracking",
+   "ProcessingModule",
+   "OpticalChannel",
+   "SpatialSeries"
+  ]
+ },
+ {
+  "id": "001177",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "SpikeEventSeries",
+   "ElectricalSeries",
+   "LFP",
+   "ElectrodeGroup",
+   "ProcessingModule",
+   "Units"
+  ]
+ },
+ {
+  "id": "001180",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units",
+   "ElectricalSeries",
+   "ProcessingModule",
+   "ElectrodeGroup",
+   "LFP",
+   "OptogeneticSeries"
+  ]
+ },
+ {
+  "id": "001188",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OpticalChannel",
+   "PlaneSegmentation",
+   "ImagingPlane",
+   "ProcessingModule",
+   "TwoPhotonSeries"
+  ]
+ },
+ {
+  "id": "001190",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "PlaneSegmentation",
+   "ImagingPlane",
+   "ProcessingModule",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "001195",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "CurrentClampStimulusSeries",
+   "VoltageClampSeries",
+   "VoltageClampStimulusSeries",
+   "CurrentClampSeries",
+   "OpticalChannel",
+   "ImagingPlane",
+   "PlaneSegmentation",
+   "ProcessingModule",
+   "OnePhotonSeries"
+  ]
+ },
+ {
+  "id": "001199",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "001200",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001202",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "001210",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OpticalChannel",
+   "ImagingPlane",
+   "SpatialSeries",
+   "Position",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "001211",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "BehavioralTimeSeries",
+   "PlaneSegmentation",
+   "OpticalChannel",
+   "ProcessingModule",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "001212",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001248",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "PlaneSegmentation",
+   "OpticalChannel",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "001256",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "TwoPhotonSeries",
+   "OpticalChannel",
+   "PlaneSegmentation",
+   "PupilTracking",
+   "ProcessingModule",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "001259",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "OptogeneticSeries",
+   "BehavioralTimeSeries",
+   "ElectricalSeries",
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "001275",
+  "species": [
+   "Macaca mulatta - Rhesus monkey"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup",
+   "ProcessingModule",
+   "SpatialSeries",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "001282",
+  "species": [
+   "Macaca mulatta - Rhesus monkey"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001290",
+  "species": [
+   "Macaca nemestrina"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001341",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units"
+  ]
+ },
+ {
+  "id": "001347",
+  "species": [
+   "Homo sapiens - Human",
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "LFP",
+   "ElectricalSeries",
+   "ProcessingModule",
+   "ElectrodeGroup",
+   "BehavioralTimeSeries"
+  ]
+ },
+ {
+  "id": "001349",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ImagingPlane",
+   "PlaneSegmentation",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "001363",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries",
+   "Units"
+  ]
+ },
+ {
+  "id": "001374",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "001375",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001413",
+  "species": [
+   "Macaca mulatta - Rhesus monkey"
+  ],
+  "variables": [
+   "OnePhotonSeries",
+   "PlaneSegmentation",
+   "ImagingPlane",
+   "OpticalChannel",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "001414",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "OpticalChannel",
+   "OnePhotonSeries",
+   "PlaneSegmentation",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "001419",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "001424",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OpticalChannel",
+   "PlaneSegmentation",
+   "ImagingPlane",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "001425",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ImagingPlane",
+   "PupilTracking",
+   "SpatialSeries",
+   "OpticalChannel",
+   "PlaneSegmentation",
+   "EyeTracking",
+   "OnePhotonSeries"
+  ]
+ },
+ {
+  "id": "001428",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "001431",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units"
+  ]
+ },
+ {
+  "id": "001433",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001435",
+  "species": [
+   "Macaca mulatta - Rhesus monkey"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "Units",
+   "ElectricalSeries",
+   "ElectrodeGroup",
+   "SpatialSeries"
+  ]
+ },
+ {
+  "id": "001444",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units"
+  ]
+ },
+ {
+  "id": "001461",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OpticalChannel",
+   "ProcessingModule",
+   "PlaneSegmentation",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "001462",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OpticalChannel",
+   "ImagingPlane",
+   "TwoPhotonSeries"
+  ]
+ },
+ {
+  "id": "001469",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "001470",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "001473",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "OpticalChannel",
+   "OnePhotonSeries"
+  ]
+ },
+ {
+  "id": "001511",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "001512",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "Units",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001530",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "BehavioralEvents",
+   "BehavioralTimeSeries",
+   "ProcessingModule",
+   "Units",
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "001538",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ImagingPlane",
+   "OpticalChannel",
+   "PlaneSegmentation",
+   "TwoPhotonSeries",
+   "VoltageClampSeries",
+   "OptogeneticSeries",
+   "CurrentClampSeries",
+   "CurrentClampStimulusSeries"
+  ]
+ },
+ {
+  "id": "001543",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ImagingPlane",
+   "OnePhotonSeries",
+   "OpticalChannel",
+   "PlaneSegmentation",
+   "BehavioralTimeSeries"
+  ]
+ },
+ {
+  "id": "001549",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "001559",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "TwoPhotonSeries",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "001560",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "OpticalChannel",
+   "OnePhotonSeries"
+  ]
+ },
+ {
+  "id": "001566",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "SpatialSeries",
+   "ProcessingModule",
+   "Position",
+   "BehavioralEvents",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "001603",
+  "species": [
+   "Homo sapiens - Human",
+   "Mus musculus - House mouse",
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units",
+   "ProcessingModule",
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001607",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "BehavioralEvents",
+   "SpatialSeries",
+   "ProcessingModule",
+   "Position",
+   "CompassDirection",
+   "BehavioralTimeSeries",
+   "LFP",
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "001610",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001611",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "001612",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "PlaneSegmentation",
+   "ProcessingModule",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "001618",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "PlaneSegmentation",
+   "ProcessingModule",
+   "OpticalChannel",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "001619",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "BehavioralTimeSeries",
+   "ProcessingModule",
+   "Units"
+  ]
+ },
+ {
+  "id": "001620",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "TwoPhotonSeries",
+   "OpticalChannel",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "001621",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OpticalChannel",
+   "TwoPhotonSeries",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "001634",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup",
+   "SpatialSeries",
+   "CompassDirection",
+   "Position",
+   "BehavioralTimeSeries",
+   "ElectricalSeries",
+   "ProcessingModule",
+   "LFP",
+   "BehavioralEvents"
+  ]
+ },
+ {
+  "id": "001635",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "OpticalChannel",
+   "ImagingPlane",
+   "BehavioralTimeSeries"
+  ]
+ },
+ {
+  "id": "001640",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001677",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units"
+  ]
+ },
+ {
+  "id": "001678",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001688",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "BehavioralEvents",
+   "ElectrodeGroup",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "001692",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OpticalChannel",
+   "ImagingPlane",
+   "ProcessingModule",
+   "OnePhotonSeries",
+   "PlaneSegmentation"
+  ]
+ },
+ {
+  "id": "001695",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "Units",
+   "ElectricalSeries",
+   "Position",
+   "SpatialSeries",
+   "ProcessingModule",
+   "LFP"
+  ]
+ },
+ {
+  "id": "001708",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units"
+  ]
+ },
+ {
+  "id": "001709",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "PlaneSegmentation",
+   "OpticalChannel",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "001712",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OpticalChannel",
+   "SpatialSeries",
+   "PlaneSegmentation",
+   "ImagingPlane",
+   "ProcessingModule",
+   "OnePhotonSeries"
+  ]
+ },
+ {
+  "id": "001747",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001749",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units",
+   "ElectrodeGroup",
+   "ElectricalSeries",
+   "SpatialSeries",
+   "Position",
+   "ProcessingModule",
+   "BehavioralTimeSeries"
+  ]
+ },
+ {
+  "id": "001765",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries",
+   "ProcessingModule",
+   "Units"
+  ]
+ },
+ {
+  "id": "001768",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "PlaneSegmentation",
+   "ImagingPlane",
+   "OpticalChannel",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "001771",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "001775",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ProcessingModule",
+   "LFP",
+   "ElectricalSeries",
+   "SpatialSeries",
+   "Units",
+   "Position",
+   "BehavioralTimeSeries"
+  ]
+ },
+ {
+  "id": "001780",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "PlaneSegmentation",
+   "ProcessingModule",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "001788",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup",
+   "Units",
+   "ProcessingModule",
+   "LFP"
+  ]
+ },
+ {
+  "id": "001827",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001829",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "CurrentClampSeries",
+   "OpticalChannel",
+   "ImagingPlane",
+   "TwoPhotonSeries",
+   "OnePhotonSeries",
+   "IZeroClampSeries"
+  ]
+ },
+ {
+  "id": "001836",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "SpatialSeries",
+   "CompassDirection",
+   "Position",
+   "BehavioralTimeSeries",
+   "ElectricalSeries",
+   "ProcessingModule",
+   "BehavioralEvents"
+  ]
+ },
+ {
+  "id": "001843",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "ProcessingModule",
+   "OnePhotonSeries",
+   "PlaneSegmentation",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "001847",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "BehavioralEvents",
+   "ProcessingModule",
+   "BehavioralEpochs",
+   "OnePhotonSeries",
+   "BehavioralTimeSeries",
+   "PlaneSegmentation",
+   "OpticalChannel",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "001848",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "Units"
+  ]
+ },
+ {
+  "id": "001861",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "PlaneSegmentation",
+   "OpticalChannel",
+   "ImagingPlane",
+   "OnePhotonSeries"
+  ]
+ },
+ {
+  "id": "001865",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ImagingPlane",
+   "EyeTracking",
+   "OpticalChannel",
+   "PupilTracking",
+   "SpatialSeries",
+   "PlaneSegmentation"
+  ]
+ },
+ {
+  "id": "001867",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units"
+  ]
+ },
+ {
+  "id": "001880",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "SpatialSeries",
+   "ElectrodeGroup",
+   "Units",
+   "Position"
+  ]
+ },
+ {
+  "id": "001885",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "001888",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "001928",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "ImagingPlane",
+   "OpticalChannel",
+   "PlaneSegmentation"
+  ]
+ },
+ {
+  "id": "001942",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units",
+   "LFP",
+   "ElectricalSeries",
+   "ProcessingModule",
+   "CompassDirection",
+   "SpatialSeries",
+   "BehavioralTimeSeries",
+   "Position",
+   "BehavioralEvents"
+  ]
+ },
+ {
+  "id": "001950",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "001951",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units",
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001955",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectricalSeries",
+   "ElectrodeGroup"
+  ]
+ },
+ {
+  "id": "001958",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Position",
+   "Units",
+   "ProcessingModule",
+   "ElectricalSeries",
+   "SpatialSeries",
+   "BehavioralEvents"
+  ]
+ },
+ {
+  "id": "001961",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "001968",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "Units",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "002010",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "002013",
+  "species": [
+   "Macaca mulatta - Rhesus monkey"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ProcessingModule",
+   "ElectricalSeries",
+   "Units"
+  ]
+ },
+ {
+  "id": "002014",
+  "species": [
+   "Macaca mulatta - Rhesus monkey"
+  ],
+  "variables": [
+   "Units",
+   "ElectricalSeries",
+   "ElectrodeGroup",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "002020",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "002021",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "TwoPhotonSeries",
+   "ImagingPlane",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "002023",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries"
+  ]
+ },
+ {
+  "id": "002034",
+  "species": [
+   "Macaca mulatta - Rhesus monkey"
+  ],
+  "variables": [
+   "Units"
+  ]
+ },
+ {
+  "id": "002039",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "BehavioralEvents",
+   "OpticalChannel",
+   "BehavioralEpochs",
+   "PlaneSegmentation",
+   "ImagingPlane",
+   "TwoPhotonSeries"
+  ]
+ },
+ {
+  "id": "002042",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ImagingPlane",
+   "OnePhotonSeries",
+   "OpticalChannel"
+  ]
+ },
+ {
+  "id": "002043",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "OpticalChannel",
+   "TwoPhotonSeries",
+   "ImagingPlane"
+  ]
+ },
+ {
+  "id": "002044",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "Units",
+   "BehavioralTimeSeries",
+   "CompassDirection",
+   "SpatialSeries",
+   "Position",
+   "LFP",
+   "ElectricalSeries",
+   "ProcessingModule",
+   "BehavioralEvents"
+  ]
+ },
+ {
+  "id": "002045",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "Units",
+   "SpikeEventSeries",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "002052",
+  "species": [
+   "Rattus norvegicus - Norway rat"
+  ],
+  "variables": [
+   "ElectrodeGroup",
+   "ElectricalSeries",
+   "Units",
+   "LFP",
+   "ProcessingModule"
+  ]
+ },
+ {
+  "id": "002056",
+  "species": [
+   "Mus musculus - House mouse"
+  ],
+  "variables": [
+   "ProcessingModule",
+   "SpatialSeries",
+   "Position",
+   "ElectrodeGroup",
+   "ElectricalSeries",
+   "OpticalChannel",
+   "ImagingPlane",
+   "OnePhotonSeries"
+  ]
+ }
+]

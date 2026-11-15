@@ -39,3 +39,6 @@ debug_output/
 /pyproject.toml
 /uv.lock
 /.python-version
+
+# Coverage check: local Python environment
+scripts/coverage/.venv/
