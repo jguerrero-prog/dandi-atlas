@@ -74,9 +74,14 @@ export function dandisetView(input: ViewInput): DandisetView {
     regionFilter === undefined
       ? subjects
       : subjectsInRegion(data, subjects, regionFilter);
-  const subject = subjects.find(
-    (candidate) => candidate.dir === input.subjectDir,
-  );
+  // A link from Neurosift names the file but not its subject folder, so the file finds its subject.
+  const subject =
+    subjects.find((candidate) => candidate.dir === input.subjectDir) ??
+    (input.sessionId
+      ? subjects.find((candidate) =>
+          candidate.assets.some((asset) => asset.asset_id === input.sessionId),
+        )
+      : undefined);
   const session = subject?.assets.find(
     (asset) => asset.asset_id === input.sessionId,
   );

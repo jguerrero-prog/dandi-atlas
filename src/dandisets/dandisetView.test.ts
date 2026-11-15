@@ -116,6 +116,12 @@ describe("dandisetView", () => {
     ]);
   });
 
+  it("finds the subject from the file alone, as Neurosift's links name it", () => {
+    const view = dandisetView({ ...base, sessionId: "b1" });
+    expect(view.subject?.name).toBe("Hench");
+    expect(view.session?.asset_id).toBe("b1");
+  });
+
   it("leaves hidden regions out of the spotlight but keeps them in the list", () => {
     const view = dandisetView({ ...base, hidden: new Set([385]) });
     expect(view.regionIds).toEqual([672, 385]);

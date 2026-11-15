@@ -29,6 +29,8 @@ export function atlasData(root: string): Plugin {
         } catch {
           return next();
         }
+        // Public data: Neurosift reads the atlas index from another origin to place its "View in BRAIN" links.
+        res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader(
           "Content-Type",
           TYPES[extname(file)] ?? "application/octet-stream",
