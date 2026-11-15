@@ -12,6 +12,15 @@
   touch-action: none;
 }
 
+.atlas-viewer-stage:focus {
+  outline: none;
+}
+
+.atlas-viewer-stage:focus-visible {
+  outline: var(--border-width-2) solid var(--border-focus);
+  outline-offset: calc(var(--border-width-2) * -1);
+}
+
 .atlas-viewer-canvas[data-cursor="region"] {
   cursor: pointer;
 }

@@ -14,9 +14,11 @@ import {
   PerspectiveCamera,
   Points,
   PointsMaterial,
+  Quaternion,
   Raycaster,
   Scene,
   ShaderMaterial,
+  Spherical,
   Vector2,
   Vector3,
   WebGLRenderer,
@@ -34,7 +36,7 @@ import {
   type BaseLook,
   type DisplayMode,
 } from "./displayMode";
-import { cameraFor, type ViewName } from "./views";
+import { cameraFor, VIEWS, type ViewName } from "./views";
 
 /** Colors the scene takes from the 3D view's theme tokens. */
 export interface SceneColors {
@@ -68,6 +70,8 @@ interface RegionMesh {
 }
 
 const DRAG_TOLERANCE = 3;
+/** The width-to-height ratio the atlases' camera distances were tuned for. */
+const WIDE_ASPECT = 1.2;
 
 /** Token colors may carry alpha (#rrggbbaa); the scene draws the color and sets opacity itself. */
 const toColor = (value: string) =>
@@ -149,6 +153,11 @@ export class BrainScene {
     canvas.addEventListener("pointerleave", this.handleLeave);
     canvas.addEventListener("pointerdown", this.handleDown);
     canvas.addEventListener("click", this.handleClick);
+    // Keys arrive at the focusable stage around the canvas.
+    (canvas.parentElement ?? canvas).addEventListener(
+      "keydown",
+      this.handleKey,
+    );
     this.resize = new ResizeObserver(() => this.fit());
     this.resize.observe(canvas.parentElement ?? canvas);
     this.fit();
@@ -166,6 +175,10 @@ export class BrainScene {
     this.canvas.removeEventListener("pointerleave", this.handleLeave);
     this.canvas.removeEventListener("pointerdown", this.handleDown);
     this.canvas.removeEventListener("click", this.handleClick);
+    (this.canvas.parentElement ?? this.canvas).removeEventListener(
+      "keydown",
+      this.handleKey,
+    );
     this.clearMeshes();
     this.clearElectrodes();
     this.controls.dispose();
@@ -293,7 +306,7 @@ export class BrainScene {
       view,
       this.config.coordSystem,
       this.center.toArray(),
-      this.config.camDist,
+      this.viewDistance(),
     );
     this.camera.position.set(...position);
     this.camera.up.set(...up);
@@ -303,6 +316,55 @@ export class BrainScene {
   /** Back to the lateral view the atlas opens with. */
   resetView() {
     this.centerOnBrain();
+  }
+
+  /** Turns the camera around the brain, keeping the atlas's up direction, as a drag does. */
+  rotateBy(azimuth: number, polar: number) {
+    const target = this.controls.target;
+    const toYUp = new Quaternion().setFromUnitVectors(
+      this.camera.up,
+      new Vector3(0, 1, 0),
+    );
+    const offset = this.camera.position
+      .clone()
+      .sub(target)
+      .applyQuaternion(toYUp);
+    const spherical = new Spherical().setFromVector3(offset);
+    spherical.theta += azimuth;
+    spherical.phi = Math.min(
+      Math.PI - 0.01,
+      Math.max(0.01, spherical.phi + polar),
+    );
+    offset.setFromSpherical(spherical).applyQuaternion(toYUp.invert());
+    this.camera.position.copy(target).add(offset);
+    this.camera.lookAt(target);
+    this.controls.update();
+  }
+
+  /** Slides the view sideways or up and down by a share of the distance to the brain. */
+  panBy(right: number, up: number) {
+    const distance = this.camera.position.distanceTo(this.controls.target);
+    const sideways = new Vector3()
+      .setFromMatrixColumn(this.camera.matrix, 0)
+      .multiplyScalar(right * distance);
+    const upward = new Vector3()
+      .setFromMatrixColumn(this.camera.matrix, 1)
+      .multiplyScalar(up * distance);
+    const move = sideways.add(upward);
+    this.camera.position.add(move);
+    this.controls.target.add(move);
+    this.controls.update();
+  }
+
+  /** Moves the camera toward the brain (below 1) or away (above 1). */
+  zoomBy(factor: number) {
+    const target = this.controls.target;
+    const offset = this.camera.position
+      .clone()
+      .sub(target)
+      .multiplyScalar(factor);
+    this.camera.position.copy(target).add(offset);
+    this.controls.update();
   }
 
   showElectrodes(points: ElectrodePoint[]) {
@@ -366,12 +428,21 @@ export class BrainScene {
     this.renderer.setSize(width, height, false);
   }
 
+  /**
+   * The atlas's camera distance, tuned for a wide view, moved back on tall ones such as phones: the field of
+   * view is vertical, so a narrow canvas sees less from side to side.
+   */
+  private viewDistance() {
+    const distance = this.config?.camDist ?? 0;
+    return distance * Math.max(1, WIDE_ASPECT / this.camera.aspect);
+  }
+
   private centerOnBrain() {
     const root = this.data && this.meshes.get(this.data.manifest.root_id);
     if (!root || !this.config) return;
     this.center = new Box3().setFromObject(root.mesh).getCenter(new Vector3());
     const [dx, dy, dz] = this.config.camOffset;
-    const d = this.config.camDist;
+    const d = this.viewDistance();
     this.camera.position.set(
       this.center.x + dx * d,
       this.center.y + dy * d,
@@ -556,6 +627,32 @@ export class BrainScene {
     this.setHighlight(id);
     this.canvas.dataset.cursor = id === null ? "" : "region";
     this.events.onHover(id === null ? null : { kind: "region", id, ...at });
+  };
+
+  /**
+   * Keys, once the 3D view has focus: arrows turn the brain 15°, Shift and arrows pan, + and − zoom,
+   * Home resets, and 1 to 6 pick the views in the View menu's order.
+   */
+  private readonly handleKey = (event: KeyboardEvent) => {
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+    const turn = Math.PI / 12;
+    const pan = event.shiftKey;
+    const view = VIEWS[Number(event.key) - 1]?.value;
+    const actions: Record<string, () => void> = {
+      ArrowLeft: () => (pan ? this.panBy(-0.05, 0) : this.rotateBy(-turn, 0)),
+      ArrowRight: () => (pan ? this.panBy(0.05, 0) : this.rotateBy(turn, 0)),
+      ArrowUp: () => (pan ? this.panBy(0, 0.05) : this.rotateBy(0, -turn)),
+      ArrowDown: () => (pan ? this.panBy(0, -0.05) : this.rotateBy(0, turn)),
+      "+": () => this.zoomBy(0.85),
+      "=": () => this.zoomBy(0.85),
+      "-": () => this.zoomBy(1 / 0.85),
+      Home: () => this.resetView(),
+    };
+    const action =
+      actions[event.key] ?? (view ? () => this.setView(view) : undefined);
+    if (!action) return;
+    event.preventDefault();
+    action();
   };
 
   private readonly handleLeave = () => {

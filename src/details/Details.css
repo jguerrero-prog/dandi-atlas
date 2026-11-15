@@ -1,5 +1,7 @@
+/* One column that never grows past the panel, so a long name can't push everything sideways. */
 .atlas-details {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
   align-content: start;
   padding: var(--space-4);
@@ -59,6 +61,7 @@
 
 .atlas-subjects {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-2);
 }
 
@@ -109,13 +112,17 @@
   outline-offset: calc(var(--border-width-2) * -1);
 }
 
+/* Subject and session ids can run long with no spaces, such as Venus++v0502++PreMPTP++Depth22130um++19990406. */
 .atlas-subject-name {
+  min-inline-size: 0;
   font: var(--type-code-sm);
+  overflow-wrap: anywhere;
 }
 
 .atlas-session-name {
   flex: 1;
   min-inline-size: 0;
+  overflow-wrap: anywhere;
 }
 
 .atlas-subject-meta {
@@ -151,4 +158,8 @@
   display: grid;
   gap: var(--space-3);
   justify-items: start;
+}
+
+.atlas-session-more {
+  padding-inline-start: var(--space-4);
 }

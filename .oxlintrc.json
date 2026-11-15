@@ -31,6 +31,13 @@
       {
         "allow": ["**/*.css"]
       }
+    ],
+    "jsx-a11y/no-noninteractive-tabindex": [
+      "error",
+      {
+        "roles": ["application", "tabpanel"],
+        "tags": []
+      }
     ]
   },
   "ignorePatterns": [

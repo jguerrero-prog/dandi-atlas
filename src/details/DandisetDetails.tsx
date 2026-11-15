@@ -222,7 +222,6 @@ function SubjectList({
       <ul className="atlas-subject-list">
         {subjects.slice(0, shown).map((subject) => {
           const current = subject === view.subject;
-          const names = sessionNames(subject.assets);
           const sessions = new Set(
             subject.assets.map((asset) => asset.session ?? asset.path),
           ).size;
@@ -252,54 +251,13 @@ function SubjectList({
                 ) && <Tag>Electrode positions</Tag>}
               </button>
               {current && (
-                <ul
-                  className="atlas-session-list"
-                  aria-label={`Sessions of ${subject.name}`}
-                >
-                  {subject.assets.map((asset) => {
-                    const name =
-                      names.get(asset.asset_id) ?? sessionName(asset);
-                    const color = hasElectrodes(asset.asset_id)
-                      ? view.sessionColor.get(asset.asset_id)
-                      : undefined;
-                    return (
-                      <li key={asset.asset_id}>
-                        <button
-                          type="button"
-                          className="atlas-session"
-                          title={name.hint}
-                          aria-current={
-                            asset === view.session ? "true" : undefined
-                          }
-                          onClick={() =>
-                            onGo({
-                              subject: subject.dir,
-                              session: asset.asset_id,
-                            })
-                          }
-                        >
-                          <span
-                            className="atlas-session-swatch"
-                            aria-hidden="true"
-                            data-empty={color ? undefined : ""}
-                            ref={(dot) =>
-                              dot?.style.setProperty(
-                                "--atlas-session-color",
-                                color ?? "",
-                              )
-                            }
-                          />
-                          <span className="atlas-session-name">
-                            {name.label}
-                          </span>
-                          <span className="atlas-subject-meta">
-                            {plural(asset.regions.length, "region")}
-                          </span>
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <SessionList
+                  key={subject.dir}
+                  subject={subject}
+                  view={view}
+                  hasElectrodes={hasElectrodes}
+                  onGo={onGo}
+                />
               )}
             </li>
           );
@@ -311,6 +269,75 @@ function SubjectList({
         onMore={() => setShown((n) => n + PAGE)}
       />
     </section>
+  );
+}
+
+/** A subject's sessions, 20 at a time; opens far enough to show the chosen session. */
+function SessionList({
+  subject,
+  view,
+  hasElectrodes,
+  onGo,
+}: {
+  subject: Subject;
+  view: DandisetView;
+  hasElectrodes: (assetId: string) => boolean;
+  onGo: DandisetDetailsProps["onGo"];
+}) {
+  const names = sessionNames(subject.assets);
+  const chosen = view.session ? subject.assets.indexOf(view.session) : -1;
+  const [shown, setShown] = useState(
+    Math.max(PAGE, Math.ceil((chosen + 1) / PAGE) * PAGE),
+  );
+  return (
+    <>
+      <ul
+        className="atlas-session-list"
+        aria-label={`Sessions of ${subject.name}`}
+      >
+        {subject.assets.slice(0, shown).map((asset) => {
+          const name = names.get(asset.asset_id) ?? sessionName(asset);
+          const color = hasElectrodes(asset.asset_id)
+            ? view.sessionColor.get(asset.asset_id)
+            : undefined;
+          return (
+            <li key={asset.asset_id}>
+              <button
+                type="button"
+                className="atlas-session"
+                title={name.hint}
+                aria-current={asset === view.session ? "true" : undefined}
+                onClick={() =>
+                  onGo({ subject: subject.dir, session: asset.asset_id })
+                }
+              >
+                <span
+                  className="atlas-session-swatch"
+                  aria-hidden="true"
+                  data-empty={color ? undefined : ""}
+                  ref={(dot) =>
+                    dot?.style.setProperty("--atlas-session-color", color ?? "")
+                  }
+                />
+                <span className="atlas-session-name">{name.label}</span>
+                <span className="atlas-subject-meta">
+                  {plural(asset.regions.length, "region")}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+      {subject.assets.length > PAGE && (
+        <div className="atlas-session-more">
+          <ShowMore
+            shown={Math.min(shown, subject.assets.length)}
+            total={subject.assets.length}
+            onMore={() => setShown((count) => count + PAGE)}
+          />
+        </div>
+      )}
+    </>
   );
 }
 
