@@ -24,7 +24,7 @@ python3 scripts/neuromorpho/analyze.py
 
 NeuroMorpho has no atlas coordinates, only a free-text region path from general to specific, such as `hippocampus › dentate gyrus › granule layer`. `analyze.py` keeps the finest term that matches an Allen region by name, by `SYNONYMS`, or, for terms that depend on their parent, by `PATH_SYNONYMS`. Every synonym is checked against `structure_graph.json` before the run.
 
-Known limits: cortical layers aren't mapped yet, so layer-level cells count at their area; NeuroMorpho's plain "superior colliculus" maps to Allen's sensory part only; a region counts as recorded when any placed electrode is in it, including probes that only pass through.
+Parenthetical acronyms such as "(DP)" are dropped before matching. Known limits: cortical layers aren't mapped yet, so layer-level cells count at their area; NeuroMorpho's plain "superior colliculus" maps to Allen's sensory part only; a region counts as recorded when any placed electrode is in it, including probes that only pass through.
 
 ## Results
 
@@ -32,4 +32,4 @@ Known limits: cortical layers aren't mapped yet, so layer-level cells count at t
 
 `results-2026-11-19/lookup-20-per-archive.md`: MouseLight is CCF micrometers with x = left–right and z = anterior–posterior (16 of 20 somas in or within 25 µm of the labeled region); Peng is 25 µm CCF voxels in (AP, DV, LR) order (17 of 20); BICCN `_reg` files aren't reliable (8 of 20, two batches with different behavior).
 
-`results-2026-11-19/report.md`: 161,361 mouse neurons; 145,466 of the 146,769 in the brain matched to an Allen region; 14,722 with a traced axon; 199 regions with both recordings and reconstructions.
+`results-2026-11-19/report.md`: 161,361 mouse neurons; 145,468 of the 146,769 in the brain matched to an Allen region; 14,722 with a traced axon; 205 regions with both recordings and reconstructions.

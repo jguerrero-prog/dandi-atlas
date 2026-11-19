@@ -1,14 +1,16 @@
 """Which coordinate convention puts each archive's somas in the regions NeuroMorpho lists?
 
-For 20 neurons per whole-brain archive, reads the soma from the file as deposited, looks it up in the
+For a sample of neurons per whole-brain archive (100 by default, --per N to change), reads the soma from the file as deposited, looks it up in the
 Allen CCF 2017 annotation volume (25 µm) under each candidate convention, and checks the region found
-against the neuron's brain_region label. The convention that agrees for most neurons is the archive's.
+against the neuron's brain_region label. It also counts how much of each whole tree lands inside the
+brain, which catches a wrong scale or a mirrored axis that one point can miss. BICCN is reported per batch.
 
-Run after fetch_nmo.py: python3 lookup_ccf.py [--insecure]
-Downloads the annotation volume once (about 30 MB, kept in cache/) and about 120 small files.
+Run after fetch_nmo.py: python3 lookup_ccf.py [--per N] [--insecure]
+Downloads the annotation volume once (about 30 MB, kept in cache/) and two small requests per neuron.
 """
 import gzip
 import json
+import re
 import ssl
 import struct
 import sys
@@ -18,6 +20,7 @@ from collections import Counter
 from pathlib import Path
 
 INSECURE = "--insecure" in sys.argv
+PER_ARCHIVE = int(sys.argv[sys.argv.index("--per") + 1]) if "--per" in sys.argv else 100
 sys.argv = sys.argv[:1]  # analyze.py reads its own arguments on import
 import analyze  # noqa: E402  region matching, synonyms and the ontology walk, shared with the overlap count
 
@@ -26,7 +29,6 @@ CACHE = HERE / "cache"
 ANNOTATION = ("https://download.alleninstitute.org/informatics-archive/current-release/"
               "mouse_ccf/annotation/ccf_2017/annotation_25.nrrd")
 ARCHIVES = {"MouseLight": None, "Peng": None, "BICCN-MOp-miniatlas-anatomy": "_reg"}
-PER_ARCHIVE = 20
 CONVENTIONS = {  # each maps a file's (x, y, z) to CCF voxels (anterior–posterior, dorsal–ventral, left–right)
     "µm, x = AP": lambda x, y, z: (x / 25, y / 25, z / 25),
     "µm, x = LR (swap x and z)": lambda x, y, z: (z / 25, y / 25, x / 25),
@@ -65,12 +67,19 @@ def load_annotation(raw):
     return sizes, at
 
 
-def soma(text):
+def points(text):
+    """(type, x, y, z) for every sample in an SWC file."""
+    out = []
     for line in text.splitlines():
         parts = line.split()
-        if len(parts) >= 7 and not line.lstrip().startswith("#") and int(float(parts[1])) == 1:
-            return tuple(map(float, parts[2:5]))
-    return None
+        if len(parts) >= 7 and not line.lstrip().startswith("#"):
+            out.append((int(float(parts[1])), *map(float, parts[2:5])))
+    return out
+
+
+def batch_of(archive, name):
+    """BICCN mixes labs whose files behave differently; its batch is the name's first number."""
+    return f"{archive} {name.split('_')[0].split('-')[0]}" if archive.startswith("BICCN") else archive
 
 
 def main():
@@ -78,12 +87,15 @@ def main():
     structures = analyze.walk(json.load(open(analyze.ATLAS / "structure_graph.json"))[0])
     by_name = {s["name"].lower(): sid for sid, s in structures.items()}
     by_acronym = {s["acronym"].lower(): sid for sid, s in structures.items()}
+    missing = [v for v in [*analyze.SYNONYMS.values(), *analyze.PATH_SYNONYMS.values()] if v.lower() not in by_name]
+    if missing:
+        sys.exit(f"Synonyms not in the Allen ontology, fix these first: {missing}")
 
     def label_region(regions):
         best = None
         for i, term in enumerate(regions):
             pair = f"{regions[i - 1]} › {term}".lower() if i else ""
-            t = term.lower().strip()
+            t = re.sub(r"\s*\([^)]*\)", "", term).lower().strip()
             name = (analyze.PATH_SYNONYMS.get(pair) or analyze.SYNONYMS.get(t) or t).lower()
             for candidate in (name, name + " area", name + " areas"):
                 if candidate in by_name:
@@ -103,58 +115,79 @@ def main():
     print("Loading the annotation volume…")
     sizes, at = load_annotation(cached("annotation_25.nrrd", ANNOTATION, context))
     neurons = [n for page in sorted((HERE / "pages").glob("*.json")) for n in json.load(open(page))]
-    lines = [f"# Soma lookup in the Allen CCF 2017 annotation (25 µm, {sizes})\n"]
+    scores, trees, rows, skipped = {}, {}, {}, Counter()
 
     for archive, name_filter in ARCHIVES.items():
         pool = [n for n in neurons if n["archive"] == archive and (not name_filter or name_filter in n["neuron_name"])]
         picked = pool[:: max(1, len(pool) // PER_ARCHIVE)][:PER_ARCHIVE]
-        scores = {c: Counter() for c in CONVENTIONS}
-        rows = []
+        print(f"{archive}: {len(picked)} of {len(pool)}")
         for n in picked:
-            meta = json.loads(get(f"https://neuromorpho.org/api/neuron/id/{n['neuron_id']}", context))
-            extension = (meta.get("original_format") or "swc").rsplit(".", 1)[-1]
-            folder = urllib.parse.quote(archive.lower())
-            url = f"https://neuromorpho.org/dableFiles/{folder}/Source-Version/{urllib.parse.quote(n['neuron_name'])}.{extension}"
+            batch = batch_of(archive, n["neuron_name"])
+            scores.setdefault(batch, {c: Counter() for c in CONVENTIONS})
+            trees.setdefault(batch, {c: [] for c in CONVENTIONS})
             try:
-                point = soma(cached(f"{archive}-{n['neuron_id']}.{extension}", url, context).decode("utf-8", "replace"))
+                meta = json.loads(get(f"https://neuromorpho.org/api/neuron/id/{n['neuron_id']}", context))
+                extension = (meta.get("original_format") or "swc").rsplit(".", 1)[-1]
+                folder = urllib.parse.quote(archive.lower())
+                url = (f"https://neuromorpho.org/dableFiles/{folder}/Source-Version/"
+                       f"{urllib.parse.quote(n['neuron_name'])}.{extension}")
+                samples = points(cached(f"{archive}-{n['neuron_id']}.{extension}", url, context).decode("utf-8", "replace"))
             except Exception as error:
-                rows.append(f"| {n['neuron_name']} | could not download ({error}) | | |")
+                skipped[f"{batch}: could not download ({type(error).__name__})"] += 1
                 continue
             label = label_region([r for r in n["brain_region"] or [] if r])
-            if point is None or label is None:
-                rows.append(f"| {n['neuron_name']} | {'no soma' if point is None else 'label not matched'} | | |")
+            somas = [p[1:] for p in samples if p[0] == 1]
+            if not samples or not somas or label is None:
+                skipped[f"{batch}: {'no soma' if not somas else 'label not matched'}"] += 1
                 continue
-            found = {}
+            point, found = somas[0], {}
             for convention, convert in CONVENTIONS.items():
                 ap, dv, lr = (round(v) for v in convert(*point))
-                hits = [at(ap + a, dv + b, lr + c) for a in (-1, 0, 1) for b in (-1, 0, 1) for c in (-1, 0, 1)]
                 centre = at(ap, dv, lr)
+                hits = [at(ap + a, dv + b, lr + c) for a in (-1, 0, 1) for b in (-1, 0, 1) for c in (-1, 0, 1)]
                 if centre in (None, 0):
-                    verdict = "outside the brain"
+                    verdict = "outside"
                 elif label in ancestors(centre):
                     verdict = "agrees"
                 elif any(h and label in ancestors(h) for h in hits):
-                    verdict = "agrees within 25 µm"
+                    verdict = "within 25 µm"
                 elif centre in ancestors(label):
-                    verdict = "coarser than the label"
+                    verdict = "coarser"
                 else:
                     verdict = "disagrees"
-                scores[convention][verdict] += 1
+                scores[batch][convention][verdict] += 1
                 found[convention] = structures.get(centre, {}).get("acronym", centre)
-            rows.append(f"| {n['neuron_name']} | {structures[label]['acronym']} | "
-                        + " · ".join(f"{found[c]}" for c in CONVENTIONS) + f" | {tuple(round(v) for v in point)} |")
+                step = max(1, len(samples) // 2000)  # up to 2,000 points per tree is plenty
+                checked = samples[::step]
+                inside = sum(1 for _, x, y, z in checked if at(*(round(v) for v in convert(x, y, z))) not in (None, 0))
+                trees[batch][convention].append(inside / len(checked))
+            rows.setdefault(batch, []).append(
+                f"| {n['neuron_name']} | {structures[label]['acronym']} | "
+                + " · ".join(str(found[c]) for c in CONVENTIONS) + f" | {tuple(round(v) for v in point)} |")
 
-        tested = len([r for r in rows if r.count("|") > 4 and "could not" not in r and "no soma" not in r and "not matched" not in r])
-        lines += [f"\n## {archive} ({len(picked)} sampled{', names with ' + name_filter if name_filter else ''}; {tested} testable)\n",
-                  "| Convention | Agrees | Within 25 µm | Coarser | Disagrees | Outside |", "|---|---:|---:|---:|---:|---:|"]
-        for convention, score in scores.items():
-            lines.append(f"| {convention} | {score['agrees']} | {score['agrees within 25 µm']} | "
-                         f"{score['coarser than the label']} | {score['disagrees']} | {score['outside the brain']} |")
-        best = max(scores, key=lambda c: scores[c]["agrees"] + scores[c]["agrees within 25 µm"])
-        lines += [f"\nBest: **{best}**\n", "| Neuron | Label | Region found (" + " · ".join(CONVENTIONS) + ") | Soma as deposited |",
-                  "|---|---|---|---|", *rows]
-        print(f"{archive}: best {best} — " + ", ".join(f"{k} {v}" for k, v in scores[best].items()))
-
+    lines = [f"# Soma and tree lookup in the Allen CCF 2017 annotation (25 µm, {sizes}), up to {PER_ARCHIVE} per archive\n",
+             "Agrees: the soma is in the labeled region or a part of it. Within 25 µm: a neighboring voxel is. "
+             "Coarser: the soma is in a parent of the labeled region. Tree inside: the median share of a tree's points "
+             "inside the brain, and how many trees have at least 95% inside.\n"]
+    for batch, by_convention in scores.items():
+        tested = sum(by_convention[next(iter(CONVENTIONS))].values())
+        lines += [f"\n## {batch} ({tested} tested)\n",
+                  "| Convention | Agrees | Within 25 µm | Coarser | Disagrees | Outside | Tree inside (median) | Trees ≥ 95% inside |",
+                  "|---|---:|---:|---:|---:|---:|---:|---:|"]
+        for convention, score in by_convention.items():
+            shares = sorted(trees[batch][convention])
+            median = shares[len(shares) // 2] if shares else 0
+            lines.append(f"| {convention} | {score['agrees']} | {score['within 25 µm']} | {score['coarser']} | "
+                         f"{score['disagrees']} | {score['outside']} | {median:.0%} | {sum(s >= 0.95 for s in shares)} |")
+        best = max(by_convention, key=lambda c: by_convention[c]["agrees"] + by_convention[c]["within 25 µm"])
+        good = by_convention[best]["agrees"] + by_convention[best]["within 25 µm"]
+        lines += [f"\nBest: **{best}**, {good} of {tested} in or within 25 µm of the labeled region.\n",
+                  "<details><summary>Every neuron</summary>\n",
+                  "| Neuron | Label | Region found (" + " · ".join(CONVENTIONS) + ") | Soma as deposited |",
+                  "|---|---|---|---|", *rows.get(batch, []), "\n</details>"]
+        print(f"{batch}: best {best}, {good} of {tested}")
+    if skipped:
+        lines += ["\n## Skipped\n", *[f"- {k}: {v}" for k, v in skipped.items()]]
     (HERE / "lookup.md").write_text("\n".join(lines) + "\n")
     print(f"Full table: {HERE / 'lookup.md'}")
 

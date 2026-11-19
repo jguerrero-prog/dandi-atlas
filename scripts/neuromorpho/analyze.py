@@ -9,7 +9,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 HERE = Path(__file__).parent
-BRAIN = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parents[2]
+REPO = Path(__file__).resolve().parents[2]
+BRAIN = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO if (REPO / "data/atlases").exists() else Path.home() / "dandi-atlas"
 ATLAS = BRAIN / "data/atlases/allen_ccf"
 
 # NeuroMorpho terms whose Allen name differs; checked against structure_graph.json at startup.
@@ -79,6 +80,12 @@ SYNONYMS = {
     "inferior olive": "Inferior olivary complex",
     "lateral dorsal nucleus": "Lateral dorsal nucleus of thalamus",
     "posterior complex": "Posterior complex of the thalamus",
+    "ventral posteromedial nucleus": "Ventral posteromedial nucleus of the thalamus",
+    "ventral posterolateral nucleus": "Ventral posterolateral nucleus of the thalamus",
+    "ventroposterolateral nucleus": "Ventral posterolateral nucleus of the thalamus",
+    "lateral posterior nucleus": "Lateral posterior nucleus of the thalamus",
+    "ventral medial nucleus": "Ventral medial nucleus of the thalamus",
+    "mediodorsal nucleus": "Mediodorsal nucleus of thalamus",
 }
 # Terms whose Allen region depends on the term before them, keyed "parent › term".
 PATH_SYNONYMS = {
@@ -87,6 +94,7 @@ PATH_SYNONYMS = {
     "dentate gyrus › hilus": "Dentate gyrus, polymorph layer",
     "lateral geniculate nucleus › dorsal": "Dorsal part of the lateral geniculate complex",
     "lateral geniculate nucleus › ventral": "Ventral part of the lateral geniculate complex",
+    "mesencephalon › reticular formation": "Midbrain reticular nucleus",
 }
 OUTSIDE_BRAIN = {"retina", "spinal cord", "peripheral nervous system", "dorsal root ganglion",
                  "enteric nervous system", "ganglion", "trigeminal ganglion", "cochlea"}
@@ -109,7 +117,7 @@ def main():
         sys.exit(f"Synonyms not in the Allen ontology, fix these first: {missing}")
 
     def match(term):
-        t = re.sub(r"\s+", " ", term.strip().lower())
+        t = re.sub(r"\s+", " ", re.sub(r"\s*\([^)]*\)", "", term).strip().lower())  # drop "(DP)"-style suffixes
         for candidate in (SYNONYMS.get(t, "").lower(), t, t + " area", t + " areas"):
             if candidate and candidate in by_name:
                 return by_name[candidate]

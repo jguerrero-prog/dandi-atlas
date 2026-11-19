@@ -3,15 +3,15 @@
 161361 mouse neurons read.
 
 - mouse neurons: 161,361
-- brain, matched to an Allen region: 145,466
-- matched at Allen level 5: 38,141
+- brain, matched to an Allen region: 145,468
+- matched at Allen level 5: 37,355
 - matched at Allen level 6: 4,834
 - with an axon traced: 14,722
 - outside the brain (retina, spinal cord, ganglia …): 14,592
-- matched at Allen level 8: 60,077
-- matched at Allen level 9: 29,354
+- matched at Allen level 8: 60,134
+- matched at Allen level 9: 30,085
 - matched at Allen level 11: 7,404
-- brain, region not matched: 1,303
+- brain, region not matched: 1,301
 - matched at Allen level 2: 1,202
 - matched at Allen level 7: 4,073
 - matched at Allen level 1: 1
@@ -22,40 +22,40 @@
 
 | Region | DANDI dandisets | NeuroMorpho cells |
 |---|---:|---:|
-| root | 70 | 145,466 |
-| Basic cell groups and regions | 68 | 145,411 |
+| root | 70 | 145,468 |
+| Basic cell groups and regions | 68 | 145,413 |
 | Cerebrum | 63 | 123,998 |
 | Cerebral cortex | 60 | 115,337 |
 | Cortical plate | 59 | 114,451 |
-| Isocortex | 40 | 55,165 |
+| Isocortex | 40 | 55,128 |
 | Hippocampal formation | 38 | 48,517 |
 | Hippocampal region | 37 | 41,634 |
 | Ammon's horn | 36 | 22,067 |
 | Field CA1 | 35 | 19,608 |
 | Visual areas | 31 | 5,486 |
 | Primary visual area | 30 | 5,303 |
-| Brain stem | 28 | 16,456 |
-| Interbrain | 25 | 3,188 |
-| Thalamus | 22 | 2,040 |
+| Brain stem | 28 | 16,458 |
+| Interbrain | 25 | 3,190 |
+| Thalamus | 22 | 2,042 |
 | Retrohippocampal region | 21 | 739 |
 | Thalamus, polymodal association cortex related | 21 | 706 |
 | Posterior parietal association areas | 21 | 348 |
 | Field CA3 | 19 | 2,281 |
-| Thalamus, sensory-motor cortex related | 19 | 460 |
+| Thalamus, sensory-motor cortex related | 19 | 1,217 |
 | Lateral visual area | 19 | 87 |
 | Dentate gyrus | 18 | 19,567 |
 | Cerebral nuclei | 18 | 8,661 |
 | Striatum | 18 | 8,168 |
 | Midbrain | 18 | 7,957 |
 | Hypothalamus | 18 | 1,148 |
-| Midbrain, motor related | 18 | 431 |
+| Midbrain, motor related | 18 | 462 |
 | fiber tracts | 18 | 55 |
 | Lateral group of the dorsal thalamus | 18 | 29 |
 | Lateral posterior nucleus of the thalamus | 18 | 20 |
 | Anterolateral visual area | 18 | 17 |
 | Rostrolateral visual area | 18 | 12 |
+| Ventral group of the dorsal thalamus | 17 | 821 |
 | Geniculate group, dorsal thalamus | 17 | 394 |
-| Ventral group of the dorsal thalamus | 17 | 64 |
 | Anteromedial visual area | 17 | 13 |
 | Field CA2 | 16 | 178 |
 | posteromedial visual area | 16 | 59 |
@@ -71,19 +71,19 @@
 | Primary somatosensory area | 14 | 17,026 |
 | Dentate gyrus, granule cell layer | 14 | 4,452 |
 | Dentate gyrus, molecular layer | 14 | 2,685 |
+| Ventral posterior complex of the thalamus | 14 | 731 |
 | Dentate gyrus, polymorph layer | 14 | 263 |
 | lateral forebrain bundle system | 14 | 38 |
 | Intralaminar nuclei of the dorsal thalamus | 14 | 27 |
 | Lateral septal complex | 14 | 26 |
-| Olfactory areas | 13 | 10,769 |
+| Olfactory areas | 13 | 10,806 |
+| Ventral posteromedial nucleus of the thalamus | 13 | 560 |
 | Reticular nucleus of the thalamus | 13 | 523 |
 | Hypothalamic lateral zone | 13 | 277 |
 | Midbrain, sensory related | 13 | 263 |
 | corpus callosum | 13 | 37 |
-| Zona incerta | 13 | 16 |
-| Lateral dorsal nucleus of thalamus | 13 | 12 |
 
-199 regions have both, 510 have recordings only (345 with no cells at all nearby, 165 whose cells are labeled only at the parent region), 10 have morphology only.
+205 regions have both, 504 have recordings only (339 with no cells at all nearby, 165 whose cells are labeled only at the parent region), 10 have morphology only.
 
 ## Recordings, no reconstructed cells in the region or labeled at its parent (top 30)
 
@@ -92,20 +92,15 @@ Fiber tracts and ventricles are listed too; they hold no cell bodies.
 - ventricular systems: 14 dandisets
 - lateral ventricle: 14 dandisets
 - Ventral part of the lateral geniculate complex: 14 dandisets
-- Ventral posterior complex of the thalamus: 14 dandisets
 - Geniculate group, ventral thalamus: 14 dandisets
 - Suprageniculate nucleus: 13 dandisets
-- Ventral posteromedial nucleus of the thalamus: 13 dandisets
 - Pretectal region: 13 dandisets
 - Intergeniculate leaflet of the lateral geniculate complex: 12 dandisets
-- Midbrain reticular nucleus: 12 dandisets
 - Anterior pretectal nucleus: 12 dandisets
 - Ethmoid nucleus of the thalamus: 12 dandisets
 - Superior colliculus, motor related, intermediate gray layer: 11 dandisets
 - Superior colliculus, motor related: 11 dandisets
 - alveus: 11 dandisets
-- Ventral posterolateral nucleus of the thalamus: 11 dandisets
-- Dorsal peduncular area: 11 dandisets
 - Posterior limiting nucleus of the thalamus: 11 dandisets
 - Posterior triangular thalamic nucleus: 11 dandisets
 - Taenia tecta: 10 dandisets
@@ -119,6 +114,11 @@ Fiber tracts and ventricles are listed too; they hold no cell bodies.
 - fimbria: 9 dandisets
 - Peripeduncular nucleus: 9 dandisets
 - Posterior pretectal nucleus: 9 dandisets
+- Induseum griseum: 8 dandisets
+- Retrosplenial area, dorsal part, layer 6a: 8 dandisets
+- Anterior cingulate area, ventral part, layer 2/3: 8 dandisets
+- Mediodorsal nucleus of thalamus: 8 dandisets
+- Medial group of the dorsal thalamus: 8 dandisets
 
 ## Recordings, cells labeled only at the parent region (top 15)
 
@@ -175,7 +175,6 @@ Fiber tracts and ventricles are listed too; they hold no cell bodies.
 - myelencephalon › reticular nucleus › dorsal: 2
 - meninges: 2
 - Subventricular zone: 2
-- ventral thalamus › ventroposterolateral nucleus: 2
 - myelencephalon: 1
 - myelencephalon › reticular nucleus: 1
 - forebrain › lateral › bundle system: 1
