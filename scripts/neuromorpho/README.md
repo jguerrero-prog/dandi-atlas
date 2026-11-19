@@ -10,6 +10,7 @@ They only read NeuroMorpho's public API and the files in `data/atlases/allen_ccf
 |---|---|---|
 | `fetch_nmo.py` | Reads the metadata of every mouse neuron into `pages/` (not committed, about 60 MB). Resumable; add `--insecure` if NeuroMorpho's certificate fails | About 325 read-only requests, 500 neurons each |
 | `check_ccf.py` | Downloads a few neurons per whole-brain archive, standardized and as deposited, and prints soma positions and spans to see which are in Allen CCF space | About 40 small file downloads |
+| `lookup_ccf.py` | Looks up each sampled soma in the Allen CCF 2017 annotation volume (25 µm) under four coordinate conventions and checks the region found against NeuroMorpho's label | The annotation volume once (about 30 MB, cached) and the sampled files |
 | `analyze.py` | Matches each neuron's `brain_region` path to an Allen region, rolls counts up the ontology, compares them with `dandi_regions.json`, and writes `report.md` | None |
 
 ## Running them
@@ -28,5 +29,7 @@ Known limits: cortical layers aren't mapped yet, so layer-level cells count at t
 ## Results
 
 `results-2026-11-19/check_ccf.md`: MouseLight originals are in CCF micrometers; BICCN `_reg` files likely are; Peng is unconfirmed; standardized (CNG) files are always re-centered.
+
+`results-2026-11-19/lookup-20-per-archive.md`: MouseLight is CCF micrometers with x = left–right and z = anterior–posterior (16 of 20 somas in or within 25 µm of the labeled region); Peng is 25 µm CCF voxels in (AP, DV, LR) order (17 of 20); BICCN `_reg` files aren't reliable (8 of 20, two batches with different behavior).
 
 `results-2026-11-19/report.md`: 161,361 mouse neurons; 145,466 of the 146,769 in the brain matched to an Allen region; 14,722 with a traced axon; 199 regions with both recordings and reconstructions.
