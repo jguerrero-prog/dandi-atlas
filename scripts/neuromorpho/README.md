@@ -12,6 +12,7 @@ They only read NeuroMorpho's public API and the files in `data/atlases/allen_ccf
 | `check_ccf.py` | Downloads a few neurons per whole-brain archive, standardized and as deposited, and prints soma positions and spans to see which are in Allen CCF space | About 40 small file downloads |
 | `lookup_ccf.py` | Looks up each sampled soma in the Allen CCF 2017 annotation volume (25 µm) under four coordinate conventions and checks the region found against NeuroMorpho's label | The annotation volume once (about 30 MB, cached) and the sampled files |
 | `distance_ccf.py` | For each sampled soma, the distance to the nearest voxel of its labeled region under the archive's best convention, and which neighbors the misses land in | None (reads `cache/`) |
+| `check_all.py` | Checks every placeable neuron (MouseLight, Peng, BICCN batches 195401, 195409, 182280): placed when the soma is within 250 µm of its labeled region and at least 90% of the tree is inside the brain. Writes `placements.json` for Brain and `check-all.md`; an archive passes at 90% placed, 95% reported too | About one small download per neuron (~2,900), 6 at a time |
 | `analyze.py` | Matches each neuron's `brain_region` path to an Allen region, rolls counts up the ontology, compares them with `dandi_regions.json`, and writes `report.md` | None |
 
 ## Running them
