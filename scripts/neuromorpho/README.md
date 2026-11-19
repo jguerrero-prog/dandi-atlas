@@ -28,6 +28,21 @@ NeuroMorpho has no atlas coordinates, only a free-text region path from general 
 
 Parenthetical acronyms such as "(DP)" are dropped before matching. Known limits: cortical layers aren't mapped yet, so layer-level cells count at their area; NeuroMorpho's plain "superior colliculus" maps to Allen's sensory part only; a region counts as recorded when any placed electrode is in it, including probes that only pass through.
 
+## Status, November 19, 2026
+
+The standard was agreed before the full run: a neuron is placed when its soma lies within 250 µm of its labeled region and at least 90% of its tree is inside the brain, and an archive passes when at least 90% of its neurons are placed. 95% is reported as the higher mark. Results are reported as they came out, passes and failures alike.
+
+| Archive or batch | Placed | Result |
+|---|---:|---|
+| Peng | 1,600 of 1,711 (93.5%) | Passes 90%, not 95% |
+| BICCN 195409 | 12 of 13 (92.3%) | Passes 90%, not 95% |
+| BICCN 182280 | 3 of 3 | Passes; too few neurons to say much |
+| MouseLight | 989 of 1,112 (88.9%) | **Fails** 90%. 47 MOp-labeled somas land in MOs and 12 PRE-labeled somas in POST or SUB, which suggests a label-versus-atlas difference; not verified |
+| BICCN 195401 | 35 of 44 (79.5%) | **Fails**: most of 8 trees lie off the atlas |
+| BICCN 16167 | not checked in full | **Fails** the lookup: no convention fits; 16 of 41 somas over 1 mm off |
+
+What Brain could show today: 1,615 placed neurons from the passing archives, every one checked, and about 145,000 more by region. MouseLight stays out until the MOp/MOs pattern is explained, for example by comparing with MouseLight's own soma annotations.
+
 ## Results
 
 `results-2026-11-19/check_ccf.md`: MouseLight originals are in CCF micrometers; BICCN `_reg` files likely are; Peng is unconfirmed; standardized (CNG) files are always re-centered.
