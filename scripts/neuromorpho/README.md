@@ -11,6 +11,7 @@ They only read NeuroMorpho's public API and the files in `data/atlases/allen_ccf
 | `fetch_nmo.py` | Reads the metadata of every mouse neuron into `pages/` (not committed, about 60 MB). Resumable; add `--insecure` if NeuroMorpho's certificate fails | About 325 read-only requests, 500 neurons each |
 | `check_ccf.py` | Downloads a few neurons per whole-brain archive, standardized and as deposited, and prints soma positions and spans to see which are in Allen CCF space | About 40 small file downloads |
 | `lookup_ccf.py` | Looks up each sampled soma in the Allen CCF 2017 annotation volume (25 µm) under four coordinate conventions and checks the region found against NeuroMorpho's label | The annotation volume once (about 30 MB, cached) and the sampled files |
+| `distance_ccf.py` | For each sampled soma, the distance to the nearest voxel of its labeled region under the archive's best convention, and which neighbors the misses land in | None (reads `cache/`) |
 | `analyze.py` | Matches each neuron's `brain_region` path to an Allen region, rolls counts up the ontology, compares them with `dandi_regions.json`, and writes `report.md` | None |
 
 ## Running them
@@ -29,6 +30,8 @@ Parenthetical acronyms such as "(DP)" are dropped before matching. Known limits:
 ## Results
 
 `results-2026-11-19/check_ccf.md`: MouseLight originals are in CCF micrometers; BICCN `_reg` files likely are; Peng is unconfirmed; standardized (CNG) files are always re-centered.
+
+`results-2026-11-19/lookup-100-per-archive.md` and `distance-100-per-archive.md`: with 100 per archive, MouseLight has 73 of 99 somas in or within 25 µm of the labeled region and 92 within 250 µm; Peng 77 of 98 and 95. Misses land in neighboring regions (MOp/MOs, SUB/ProS, VPM/VPL), consistent with registration error. BICCN 195401 fits (42 of 43 within 250 µm); BICCN 16167 doesn't (16 of 41 farther than 1 mm).
 
 `results-2026-11-19/lookup-20-per-archive.md`: MouseLight is CCF micrometers with x = left–right and z = anterior–posterior (16 of 20 somas in or within 25 µm of the labeled region); Peng is 25 µm CCF voxels in (AP, DV, LR) order (17 of 20); BICCN `_reg` files aren't reliable (8 of 20, two batches with different behavior).
 
